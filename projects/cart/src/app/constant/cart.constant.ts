@@ -1,0 +1,80 @@
+export interface ScreenContentItem {
+  key: string;
+  device: string;
+  [key: string]: any;
+}
+
+export interface ScreenContentGroup {
+  screenIdentifier: string;
+  screenContent: ScreenContentItem[];
+}
+
+export interface CartMockConfig {
+  screenCoverage: string;
+  moduleIdentifier: string;
+  lastModified: string;
+  content: ScreenContentGroup[];
+}
+
+export const CART_FALLBACK: CartMockConfig = {
+  screenCoverage: 'single',
+  moduleIdentifier: 'cart',
+  lastModified: '2026-09-18T10:00:00',
+  content: [
+    {
+      screenIdentifier: 'cart-app-content',
+      screenContent: [
+        {
+          key: 'page-header',
+          device: 'both',
+          title: 'Shopping Cart',
+          subtitle: 'Manage your items and review before checkout'
+        },
+        {
+          key: 'cart',
+          device: 'both',
+          currencySymbol: '₹',
+          items: 'Items',
+          quantity: 'Qty',
+          decreaseQty: 'Decrease quantity',
+          increaseQty: 'Increase quantity',
+          remove: 'Remove',
+          clearCart: 'Clear Cart',
+          continueShoppingLink: '← Continue Shopping'
+        },
+        {
+          key: 'empty-cart',
+          device: 'both',
+          icon: '🛒',
+          title: 'Your cart is empty',
+          description: "Looks like you haven't added any items yet.",
+          continueShopping: 'Continue Shopping'
+        },
+        {
+          key: 'order-summary',
+          device: 'both',
+          currencySymbol: '₹',
+          title: 'Order Summary',
+          subtotal: 'Subtotal',
+          delivery: 'Delivery',
+          free: 'FREE',
+          total: 'Total Payable',
+          checkout: 'Proceed to Checkout',
+          secureCheckout: '🔒 100% Secure Checkout'
+        },
+        {
+          key: 'login-modal',
+          device: 'both',
+          title: 'Login to Continue',
+          emailLabel: 'Email Address',
+          emailPlaceholder: 'Enter registered email',
+          passwordLabel: 'Password',
+          passwordPlaceholder: 'Enter your password',
+          rememberMe: 'Remember me',
+          submitBtn: 'Login & Continue',
+          cancelBtn: 'Cancel'
+        }
+      ]
+    }
+  ]
+};

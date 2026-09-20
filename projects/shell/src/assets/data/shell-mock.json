@@ -1,0 +1,382 @@
+{
+  "screenCoverage": "single",
+  "moduleIdentifier": "shell",
+  "lastModified": "2026-09-20T10:00:00",
+  "content": [
+    {
+      "screenIdentifier": "shell-app-content",
+      "screenContent": [
+        {
+          "key": "shell-navbar",
+          "device": "both",
+          "brandLogo": "🛒 ShopEasy",
+          "linkHome": "Home",
+          "linkProducts": "Products",
+          "linkCart": "🛒 Cart",
+          "linkOrders": "Orders",
+          "linkProfile": "👤 Profile",
+          "linkLogin": "LogIn",
+          "buttonLogout": "LogOut"
+        },
+        {
+          "key": "cart",
+          "device": "both",
+          "items": "Items",
+          "currencySymbol": "₹",
+          "quantity": "Quantity:",
+          "decreaseQty": "Decrease Quantity",
+          "increaseQty": "Increase Quantity",
+          "remove": "Remove",
+          "clearCart": "Clear Cart",
+          "continueShoppingLink": "← Continue Shopping"
+        },
+        {
+          "key": "order-summary",
+          "device": "both",
+          "title": "Order Summary",
+          "subtotal": "Subtotal",
+          "delivery": "Delivery",
+          "free": "FREE",
+          "total": "Total Payable",
+          "checkout": "Proceed to Checkout →",
+          "secureCheckout": "🔒 100% Safe and Secure Checkout Guaranteed",
+          "currencySymbol": "₹"
+        },
+        {
+          "key": "empty-cart",
+          "device": "both",
+          "icon": "🛒",
+          "title": "Your Cart is Empty",
+          "description": "Looks like you haven't added anything to your cart yet.",
+          "continueShopping": "Start Shopping Now"
+        },
+        {
+          "key": "login-modal",
+          "device": "both",
+          "title": "Sign In to Proceed",
+          "emailLabel": "Email Address",
+          "emailPlaceholder": "name@company.com",
+          "passwordLabel": "Password",
+          "passwordPlaceholder": "••••••••",
+          "rememberMe": "Remember me",
+          "submitBtn": "Sign In & Checkout",
+          "cancelBtn": "Cancel"
+        },
+        {
+          "key": "orders-content",
+          "device": "both",
+          "pageTitle": "My Purchased Orders",
+          "emptyStateIcon": "📦",
+          "emptyStateTitle": "No orders found",
+          "emptyStateSubtitle": "You haven't placed any orders yet.",
+          "authRequiredIcon": "🔒",
+          "authRequiredTitle": "Please Sign In",
+          "authRequiredSubtitle": "You need to be logged in to view your purchased orders and track deliveries.",
+          "authRequiredBtnText": "Sign In Now",
+          "orderPrefix": "Order #",
+          "statusCompleted": "Completed",
+          "trackStatusText": "Track Status →",
+          "qtyLabel": "Qty:",
+          "paymentMethodLabel": "Payment Method:",
+          "paymentMethodValue": "Paid Online",
+          "modalPaymentLabel": "Payment:",
+          "totalPaidLabel": "Total Paid:",
+          "currencySymbol": "₹",
+          "placeholderImage": "https://via.placeholder.com/60?text=Product",
+          "trackingModalTitle": "Track Order #",
+          "trackingStatusLabel": "Status:",
+          "deliveryAddressHeader": "📍 Delivery Address",
+          "trackingItemsHeader": "Items in this order",
+          "trackingDoneBtn": "Done",
+          "stepConfirmed": "Order Confirmed",
+          "stepShipped": "Shipped",
+          "stepOutForDelivery": "Out for Delivery",
+          "stepDelivered": "Delivered",
+          "stepExpectedSoon": "Expected soon",
+          "stepInTransit": "In transit",
+          "stepExpectedDays": "Expected in 2-3 days",
+          "stepDeliveredState": "Delivered",
+          "stepProcessed": "Processed"
+        },
+        {
+          "key": "login-content",
+          "device": "both",
+          "loggedInTitle": "Welcome Back",
+          "loggedInSubtitle": "You are currently logged in to your account.",
+          "logoutBtnText": "Logout",
+          "welcomeTitle": "Welcome Back",
+          "welcomeSubtitle": "Please enter your details to sign in ",
+          "signupTitle": "Create Account",
+          "signupSubtitle": "Please enter your details to sign up",
+          "googleButtonText": "Continue with Google",
+          "noAccountText": "Don't have an account?",
+          "hasAccountText": "Already have an account?",
+          "createAccountLink": "Create account",
+          "signInLink": "Sign in",
+          "emailLabel": "Email address",
+          "emailPlaceholder": "name@company.com",
+          "emailRequiredError": "Email address is required.",
+          "emailPatternError": "Please enter a valid email address (e.g. name@domain.com).",
+          "passwordLabel": "Password",
+          "passwordPlaceholder": "••••••••",
+          "passwordRequiredError": "Password is required.",
+          "passwordPatternError": "Password must be at least 8 characters long, containing 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character (@$!%*?&).",
+          "confirmPasswordRequiredError": "Confirming your password is required.",
+          "passwordsMismatchError": "Passwords do not match.",
+          "togglePasswordAria": "Toggle password visibility",
+          "rememberMeLabel": "Remember me",
+          "forgotPasswordLink": "Forgot password?",
+          "signInButtonText": "Sign In",
+          "fullNameLabel": "Full Name",
+          "fullNamePlaceholder": "John Doe",
+          "fullNameRequiredError": "Full name is required.",
+          "confirmPasswordLabel": "Confirm Password",
+          "signUpButtonText": "Create Account",
+          "orDividerText": "OR"
+        },
+        {
+          "key": "checkout-content",
+          "device": "both",
+          "pageTitle": "Checkout(aem)",
+          "backToCart": "← Back to Cart",
+          "shippingSectionTitle": "1. Shipping Address one",
+          "fullNameLabel": "Full Name *",
+          "fullNamePlaceholder": "John Doe",
+          "phoneLabel": "Phone Number *",
+          "phonePlaceholder": "10-digit mobile",
+          "emailLabel": "Email Address",
+          "emailPlaceholder": "name@company.com",
+          "streetLabel": "Street Address / Flat No. *",
+          "streetPlaceholder": "House/Flat No., Street, Area",
+          "cityLabel": "City *",
+          "cityPlaceholder": "City",
+          "stateLabel": "State *",
+          "statePlaceholder": "State",
+          "pincodeLabel": "Pincode *",
+          "pincodePlaceholder": "6-digit PIN",
+          "paymentSectionTitle": "2. Payment Method",
+          "onlinePaymentTitle": "Pay Online",
+          "onlinePaymentSubtitle": "UPI (Google Pay, PhonePe), Debit/Credit Card, Net Banking",
+          "codPaymentTitle": "Cash on Delivery (COD)",
+          "codPaymentSubtitle": "Pay with cash upon arrival",
+          "upiTabLabel": "UPI",
+          "cardTabLabel": "Card",
+          "netbankingTabLabel": "Net Banking",
+          "upiIdLabel": "UPI ID (VPA) *",
+          "upiIdPlaceholder": "username@okhdfcbank",
+          "upiHelperText": "A payment request will be sent to your UPI app.",
+          "cardNumberLabel": "Card Number *",
+          "cardNumberPlaceholder": "16-digit card number",
+          "cardExpiryLabel": "Valid Thru (MM/YY) *",
+          "cardExpiryPlaceholder": "08/28",
+          "cardCvvLabel": "CVV *",
+          "cardCvvPlaceholder": "123",
+          "selectBankLabel": "Select Bank *",
+          "payOnlineBtn": "Pay Online & Complete Order",
+          "confirmCodBtn": "Confirm Order with COD",
+          "orderSummaryTitle": "Order Summary",
+          "qtyLabel": "Qty:",
+          "subtotalLabel": "Subtotal",
+          "deliveryLabel": "Delivery",
+          "freeDeliveryText": "FREE",
+          "totalPayableLabel": "Total Payable",
+          "currencySymbol": "₹"
+        },
+        {
+          "key": "profile-content",
+          "device": "both",
+          "memberSincePrefix": "Member since",
+          "tabPersonalInfo": "👤 Personal Information",
+          "tabAddresses": "📍 Saved Addresses",
+          "tabSecurity": "🔒 Login & Security",
+          "tabLogout": "🚪 Logout",
+          "totalOrdersLabel": "Total Orders",
+          "personalInfoTitle": "Personal Information",
+          "personalInfoSubtitle": "Manage your personal details and contact preferences",
+          "editProfileBtn": "Edit Profile",
+          "cancelBtn": "Cancel",
+          "fullNameLabel": "Full Name",
+          "emailLabel": "Email Address",
+          "emailNote": "Email cannot be changed directly.",
+          "phoneLabel": "Mobile Number",
+          "genderLabel": "Gender",
+          "genderOptionMale": "Male",
+          "genderOptionFemale": "Female",
+          "genderOptionOther": "Other",
+          "saveChangesBtn": "Save Changes",
+          "addressesTitle": "Saved Addresses",
+          "addressesSubtitle": "Your primary shipping destination for faster checkout",
+          "defaultTag": "DEFAULT",
+          "securityTitle": "Login & Security",
+          "securitySubtitle": "Ensure your account is protected with a secure password",
+          "currentPasswordLabel": "Current Password",
+          "currentPasswordPlaceholder": "••••••••",
+          "newPasswordLabel": "New Password",
+          "newPasswordPlaceholder": "Min. 6 characters",
+          "confirmPasswordLabel": "Confirm New Password",
+          "confirmPasswordPlaceholder": "••••••••",
+          "updatePasswordBtn": "Update Password"
+        },
+        {
+          "key": "home-hero",
+          "device": "both",
+          "offerTag": "🔥 Special Offer",
+          "headingLine1": "Shop Smart",
+          "headingLine2": "Shop Everything",
+          "subheading": "Discover the latest products at amazing prices. Find electronics, fashion, accessories and more.",
+          "shopBtnText": "Shop Now →",
+          "exploreBtnText": "Explore More →"
+        },
+        {
+          "key": "home-metrics",
+          "device": "both",
+          "list": [
+            { "icon": "⚡", "value": "24 Hr", "label": "Express Delivery" },
+            { "icon": "📦", "value": "15,000+", "label": "Orders Fulfilled" },
+            { "icon": "⭐", "value": "4.9 / 5", "label": "Customer Rating" },
+            { "icon": "🛡️", "value": "100%", "label": "Certified Authentic" }
+          ]
+        },
+        {
+          "key": "home-categories",
+          "device": "both",
+          "title": "Shop by Category",
+          "subtitle": "Find what you are looking for",
+          "list": [
+            { "icon": "📱", "name": "Mobiles", "count": "120+ Products" },
+            { "icon": "💻", "name": "Laptops", "count": "80+ Products" },
+            { "icon": "🎧", "name": "Accessories", "count": "200+ Products" }
+          ]
+        },
+        {
+          "key": "home-discovery-cards",
+          "device": "both",
+          "list": [
+            {
+              "badge": "New Release",
+              "title": "Next-Gen Audio",
+              "tagline": "Spatial acoustics and active noise cancellation",
+              "icon": "🎧"
+            },
+            {
+              "badge": "Special Deal",
+              "title": "Pro Workstations",
+              "tagline": "Powerful computing gear engineered for creators",
+              "icon": "💻"
+            },
+            {
+              "badge": "Trending",
+              "title": "Smart Wearables",
+              "tagline": "Track everyday vitals, heart rate, and workouts",
+              "icon": "⌚"
+            }
+          ]
+        },
+        {
+          "key": "home-features",
+          "device": "both",
+          "list": [
+            { "icon": "🚚", "title": "Free Delivery", "desc": "Free delivery on orders above ₹499" },
+            { "icon": "🔒", "title": "Secure Payment", "desc": "100% secure payment" },
+            { "icon": "↩️", "title": "Easy Returns", "desc": "7 days easy return policy" },
+            { "icon": "💬", "title": "24/7 Support", "desc": "We are here to help" }
+          ]
+        },
+        {
+          "key": "home-featured-products",
+          "device": "both",
+          "title": "Featured Products",
+          "subtitle": "Popular products you may like",
+          "viewAllBtnText": "View All →",
+          "products": [
+            {
+              "img": "💻",
+              "badge": "Best Seller",
+              "title": "HP Laptop",
+              "ratingStars": "★★★★★",
+              "ratingCount": "(120)",
+              "currentPrice": "₹55,999",
+              "originalPrice": "₹65,999"
+            },
+            {
+              "img": "⌚",
+              "badge": "New",
+              "title": "Smart Watch",
+              "ratingStars": "★★★★★",
+              "ratingCount": "(150)",
+              "currentPrice": "₹4,499",
+              "originalPrice": "₹6,999"
+            }
+          ]
+        },
+        {
+          "key": "home-testimonials",
+          "device": "both",
+          "title": "What Our Shoppers Say",
+          "subtitle": "Real verified customer reviews and experiences",
+          "list": [
+            {
+              "stars": "★★★★★",
+              "comment": "The fastest delivery and authentic packaging. Everything arrived in pristine condition.",
+              "avatar": "👤",
+              "name": "Aditi Verma",
+              "role": "Verified Buyer"
+            },
+            {
+              "stars": "★★★★★",
+              "comment": "Seamless order experience, transparent tracking, and genuine warranty included.",
+              "avatar": "👤",
+              "name": "Rahul Deshmukh",
+              "role": "Tech Enthusiast"
+            },
+            {
+              "stars": "★★★★★",
+              "comment": "Found deals on studio gear that beat competitors by a long margin. Highly recommended.",
+              "avatar": "👤",
+              "name": "Pooja Patel",
+              "role": "Verified Buyer"
+            }
+          ]
+        },
+        {
+          "key": "home-promos",
+          "device": "both",
+          "bannerTag": "LIMITED TIME OFFER",
+          "bannerTitle": "Get up to 50% OFF",
+          "bannerDesc": "On selected electronics and accessories.",
+          "bannerBtnText": "Explore Deals →",
+          "newsletterTitle": "Stay Updated",
+          "newsletterDesc": "Subscribe to get updates about new products and special offers.",
+          "subscribeBtnText": "Subscribe",
+          "emailPlaceholder": "Enter your email"
+        },
+        {
+          "key": "home-trust-badges",
+          "device": "both",
+          "list": [
+            {
+              "icon": "🔒",
+              "title": "Encrypted Payments",
+              "desc": "256-bit SSL multi-layered checkout security."
+            },
+            {
+              "icon": "🔄",
+              "title": "7-Day Easy Returns",
+              "desc": "No-questions-asked pickup and replacement."
+            },
+            {
+              "icon": "🏷️",
+              "title": "Best Price Match",
+              "desc": "Certified competitive prices on brand originals."
+            },
+            {
+              "icon": "💬",
+              "title": "24/7 Priority Support",
+              "desc": "Direct access to technical assistance anytime."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

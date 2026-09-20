@@ -1,0 +1,139 @@
+<div class="products-page">
+
+  <!-- =========================
+        PAGE HEADER & SEARCH
+  ========================== -->
+  <header class="page-header">
+    <div class="header-titles">
+      <h1>
+        {{ revamp()?.[ 'page-header' ]?.[ 'title' ] }}
+      </h1>
+      <p>
+        {{ revamp()?.[ 'page-header' ]?.[ 'subtitle' ] }}
+      </p>
+    </div>
+
+    <!-- Search Box -->
+    <form 
+      class="search-box" 
+      (submit)="$event.preventDefault()"
+    >
+      <input
+        type="text"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchSubject.next($event)"
+        name="searchInput"
+        [placeholder]="revamp()?.[ 'search' ]?.[ 'placeholder' ]"
+        [attr.aria-label]="revamp()?.[ 'search' ]?.[ 'ariaLabel' ]"
+      />
+      <button 
+        *ngIf="searchText()" 
+        type="button" 
+        class="clear-search-btn"
+        (click)="showAllProducts()"
+        [attr.aria-label]="revamp()?.[ 'search' ]?.[ 'clearAriaLabel' ]"
+      >
+        ✕
+      </button>
+      <button type="submit">
+        {{ revamp()?.[ 'search' ]?.[ 'buttonLabel' ] }}
+      </button>
+    </form>
+  </header>
+
+  <!-- =========================
+        CATEGORIES
+  ========================== -->
+  <nav class="category-bar" role="tablist">
+    <button
+      type="button"
+      role="tab"
+      *ngFor="let category of categories(); trackBy: trackByCategory"
+      class="category"
+      [class.active]="selectedCategory().toLowerCase() === category.value.toLowerCase()"
+      (click)="selectCategory(category.value)"
+    >
+      {{ category.label }}
+    </button>
+  </nav>
+
+  <!-- =========================
+        PRODUCTS GRID
+  ========================== -->
+  <main class="products-grid" *ngIf="filteredProducts().length > 0; else noProducts">
+    <article
+      class="product-card"
+      *ngFor="let product of filteredProducts(); trackBy: trackByProduct"
+    >
+      <!-- Category Tag -->
+      <span class="category-name" *ngIf="product.category">
+        {{ product.category }}
+      </span>
+
+      <!-- Product Image with Error Fallback -->
+      <div class="product-image">
+        <img 
+          [src]="product.image" 
+          [alt]="product.title" 
+          loading="lazy" 
+          (error)="$any($event.target).src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80'"
+        />
+      </div>
+
+      <!-- Product Details -->
+      <div class="product-details">
+        <h2 class="product-title" [title]="product.title">
+          {{ product.title }}
+        </h2>
+
+        <p class="product-description" *ngIf="product.description">
+          {{ product.description }}
+        </p>
+
+        <!-- Rating -->
+        <div class="rating" *ngIf="product.rating || product.reviewCount">
+          <span class="stars" *ngIf="product.rating">{{ product.rating }}</span>
+          <span class="review-count" *ngIf="product.reviewCount">{{ product.reviewCount }}</span>
+        </div>
+
+        <!-- Price -->
+        <div class="price-row">
+          <span class="price">
+            {{ revamp()?.[ 'search' ]?.[ 'currencySymbol' ] }}{{ product.price | number }}
+          </span>
+          <span class="old-price" *ngIf="product.oldPrice">
+            {{ revamp()?.[ 'search' ]?.[ 'currencySymbol' ] }}{{ product.oldPrice | number }}
+          </span>
+        </div>
+
+        <!-- Add To Cart Button -->
+        <button 
+          type="button" 
+          class="add-cart" 
+          (click)="addToCart(product)"
+        >
+          {{ product.buttonLabel || revamp()?.[ 'search' ]?.[ 'addToCartLabel' ] }}
+        </button>
+      </div>
+    </article>
+  </main>
+
+  <!-- =========================
+        EMPTY STATE
+  ========================== -->
+  <ng-template #noProducts>
+    <div class="empty-state">
+      <div class="empty-icon" aria-hidden="true">🔎</div>
+      <h2>
+        {{ revamp()?.[ 'search' ]?.[ 'noResultsTitle' ] }}
+      </h2>
+      <p>
+        {{ revamp()?.[ 'search' ]?.[ 'noResultsSubtitle' ] }}
+      </p>
+      <button type="button" class="reset-btn" (click)="showAllProducts()">
+        {{ revamp()?.[ 'search' ]?.[ 'resetBtnText' ] }}
+      </button>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,208 @@
+<div class="profile-page">
+  <div class="profile-container">
+
+    <!-- Left Sidebar: Account Summary Card -->
+    <aside class="profile-sidebar">
+      <div class="user-badge-card">
+        <div class="avatar-large">
+          <span>{{ user.fullName.charAt(0).toUpperCase() }}</span>
+        </div>
+        <h3>{{ user.fullName }}</h3>
+        <p class="email">{{ user.email }}</p>
+        <span class="member-tag">
+          {{ revamp()?.[ 'profile-content' ]?.[ 'memberSincePrefix' ] }} {{ user.memberSince }}
+        </span>
+      </div>
+
+      <nav class="profile-nav">
+        <button 
+          type="button" 
+          [class.active]="activeTab === 'details'" 
+          (click)="activeTab = 'details'"
+        >
+          {{ revamp()?.[ 'profile-content' ]?.[ 'tabPersonalInfo' ] }}
+        </button>
+        <button 
+          type="button" 
+          [class.active]="activeTab === 'addresses'" 
+          (click)="activeTab = 'addresses'"
+        >
+          {{ revamp()?.[ 'profile-content' ]?.[ 'tabAddresses' ] }}
+        </button>
+        <button 
+          type="button" 
+          [class.active]="activeTab === 'security'" 
+          (click)="activeTab = 'security'"
+        >
+          {{ revamp()?.[ 'profile-content' ]?.[ 'tabSecurity' ] }}
+        </button>
+        <button type="button" class="logout-link" (click)="logout()">
+          {{ revamp()?.[ 'profile-content' ]?.[ 'tabLogout' ] }}
+        </button>
+      </nav>
+
+      <div class="quick-stats-card">
+        <div class="stat-box" (click)="router.navigate(['/orders'])">
+          <span class="count">{{ orderCount }}</span>
+          <span class="label">{{ revamp()?.[ 'profile-content' ]?.[ 'totalOrdersLabel' ] }}</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Panel: Content -->
+    <main class="profile-content">
+      <div class="alert-banner" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <!-- TAB 1: PERSONAL INFORMATION -->
+      <section class="content-card" *ngIf="activeTab === 'details'">
+        <div class="card-header">
+          <div>
+            <h2>{{ revamp()?.[ 'profile-content' ]?.[ 'personalInfoTitle' ] }}</h2>
+            <p>{{ revamp()?.[ 'profile-content' ]?.[ 'personalInfoSubtitle' ] }}</p>
+          </div>
+          <button type="button" class="edit-btn" (click)="isEditing = !isEditing">
+            {{ isEditing 
+              ? revamp()?.[ 'profile-content' ]?.[ 'cancelBtn' ] 
+              : revamp()?.[ 'profile-content' ]?.[ 'editProfileBtn' ] }}
+          </button>
+        </div>
+
+        <form (ngSubmit)="saveProfile()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>{{ revamp()?.[ 'profile-content' ]?.[ 'fullNameLabel' ] }}</label>
+              <input 
+                type="text" 
+                [(ngModel)]="user.fullName" 
+                name="fullName" 
+                [disabled]="!isEditing" 
+                required 
+              />
+            </div>
+
+            <div class="form-group">
+              <label>{{ revamp()?.[ 'profile-content' ]?.[ 'emailLabel' ] }}</label>
+              <input 
+                type="email" 
+                [(ngModel)]="user.email" 
+                name="email" 
+                disabled 
+              />
+              <small class="helper-note">{{ revamp()?.[ 'profile-content' ]?.[ 'emailNote' ] }}</small>
+            </div>
+
+            <div class="form-group">
+              <label>{{ revamp()?.[ 'profile-content' ]?.[ 'phoneLabel' ] }}</label>
+              <input 
+                type="tel" 
+                [(ngModel)]="user.phone" 
+                name="phone" 
+                [disabled]="!isEditing" 
+              />
+            </div>
+
+            <div class="form-group">
+              <label>{{ revamp()?.[ 'profile-content' ]?.[ 'genderLabel' ] }}</label>
+              <select [(ngModel)]="user.gender" name="gender" [disabled]="!isEditing">
+                <option>{{ revamp()?.[ 'profile-content' ]?.[ 'genderOptionMale' ] }}</option>
+                <option>{{ revamp()?.[ 'profile-content' ]?.[ 'genderOptionFemale' ] }}</option>
+                <option>{{ revamp()?.[ 'profile-content' ]?.[ 'genderOptionOther' ] }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-footer" *ngIf="isEditing">
+            <button type="submit" class="save-btn">
+              {{ revamp()?.[ 'profile-content' ]?.[ 'saveChangesBtn' ] }}
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- TAB 2: SAVED ADDRESSES -->
+      <section class="content-card" *ngIf="activeTab === 'addresses'">
+        <div class="card-header">
+          <div>
+            <h2>{{ revamp()?.[ 'profile-content' ]?.[ 'addressesTitle' ] }}</h2>
+            <p>{{ revamp()?.[ 'profile-content' ]?.[ 'addressesSubtitle' ] }}</p>
+          </div>
+        </div>
+
+        <div class="address-grid">
+          <div class="address-card" *ngFor="let addr of savedAddresses">
+            <div class="address-badge-row">
+              <span class="type-tag">{{ addr.type }}</span>
+              <span class="default-tag" *ngIf="addr.isDefault">
+                {{ revamp()?.[ 'profile-content' ]?.[ 'defaultTag' ] }}
+              </span>
+            </div>
+            <strong>{{ user.fullName }}</strong>
+            <p class="address-text">
+              {{ addr.street }}<br />
+              {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}
+            </p>
+            <p class="phone-text">
+              {{ revamp()?.[ 'profile-content' ]?.[ 'phoneLabel' ] }}: {{ user.phone }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: LOGIN & SECURITY -->
+      <section class="content-card" *ngIf="activeTab === 'security'">
+        <div class="card-header">
+          <div>
+            <h2>{{ revamp()?.[ 'profile-content' ]?.[ 'securityTitle' ] }}</h2>
+            <p>{{ revamp()?.[ 'profile-content' ]?.[ 'securitySubtitle' ] }}</p>
+          </div>
+        </div>
+
+        <div class="error-msg" *ngIf="passwordError">
+          {{ passwordError }}
+        </div>
+
+        <form (ngSubmit)="updatePassword()" class="security-form">
+          <div class="form-group">
+            <label>{{ revamp()?.[ 'profile-content' ]?.[ 'currentPasswordLabel' ] }}</label>
+            <input 
+              type="password" 
+              [(ngModel)]="currentPassword" 
+              name="currentPassword" 
+              [placeholder]="revamp()?.[ 'profile-content' ]?.[ 'currentPasswordPlaceholder' ]" 
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label>{{ revamp()?.[ 'profile-content' ]?.[ 'newPasswordLabel' ] }}</label>
+            <input 
+              type="password" 
+              [(ngModel)]="newPassword" 
+              name="newPassword" 
+              [placeholder]="revamp()?.[ 'profile-content' ]?.[ 'newPasswordPlaceholder' ]" 
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label>{{ revamp()?.[ 'profile-content' ]?.[ 'confirmPasswordLabel' ] }}</label>
+            <input 
+              type="password" 
+              [(ngModel)]="confirmPassword" 
+              name="confirmPassword" 
+              [placeholder]="revamp()?.[ 'profile-content' ]?.[ 'confirmPasswordPlaceholder' ]" 
+              required 
+            />
+          </div>
+
+          <button type="submit" class="save-btn">
+            {{ revamp()?.[ 'profile-content' ]?.[ 'updatePasswordBtn' ] }}
+          </button>
+        </form>
+      </section>
+    </main>
+
+  </div>
+</div>

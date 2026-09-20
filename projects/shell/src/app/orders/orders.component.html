@@ -1,0 +1,197 @@
+<div class="orders-container">
+  <h2 class="page-title">
+    {{ revamp()?.[ 'orders-content' ]?.[ 'pageTitle' ] }}
+  </h2>
+
+  <!-- 1. Authenticated User View -->
+  <ng-container *ngIf="isLoggedIn; else pleaseLogin">
+    <!-- Empty State -->
+    <div *ngIf="orders.length === 0" class="empty-state">
+      <div class="empty-icon">
+        {{ revamp()?.[ 'orders-content' ]?.[ 'emptyStateIcon' ] }}
+      </div>
+      <h3>
+        {{ revamp()?.[ 'orders-content' ]?.[ 'emptyStateTitle' ] }}
+      </h3>
+      <p>
+        {{ revamp()?.[ 'orders-content' ]?.[ 'emptyStateSubtitle' ] }}
+      </p>
+    </div>
+
+    <!-- Orders Cards List -->
+    <div 
+      *ngFor="let order of orders" 
+      class="order-card clickable"
+      (click)="openTracking(order)"
+      title="Click to track order"
+    >
+      <div class="order-header">
+        <div class="order-meta">
+          <span class="order-id">
+            {{ revamp()?.[ 'orders-content' ]?.[ 'orderPrefix' ] }}{{ order.id }}
+          </span>
+          <span class="order-date">{{ order.date | date:'medium' }}</span>
+        </div>
+        
+        <div class="badge-group">
+          <span class="track-hint">
+            {{ revamp()?.[ 'orders-content' ]?.[ 'trackStatusText' ] }}
+          </span>
+          <span class="status-badge" [ngClass]="order.badgeClass">
+            {{ order.statusBadgeText }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Items in Order -->
+      <div class="order-items">
+        <div *ngFor="let item of order.items" class="item-row">
+          <div class="item-info">
+            <img 
+              [src]="item.image" 
+              [alt]="item.name" 
+              class="item-thumbnail"
+              (error)="handleImageError($event)"
+            />
+            <div class="item-details">
+              <span class="item-name">{{ item.name }}</span>
+              <span class="item-qty">
+                {{ revamp()?.[ 'orders-content' ]?.[ 'qtyLabel' ] }} 
+                {{ item.quantity }} × {{ revamp()?.[ 'orders-content' ]?.[ 'currencySymbol' ] }}{{ item.price }}
+              </span>
+            </div>
+          </div>
+          <div class="item-total">
+            {{ revamp()?.[ 'orders-content' ]?.[ 'currencySymbol' ] }}{{ item.price * item.quantity }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Summary with Dynamic Payment Method -->
+      <div class="order-footer">
+        <span class="payment-method-container">
+          {{ revamp()?.[ 'orders-content' ]?.[ 'paymentMethodLabel' ] }} 
+          <strong 
+            class="badge-pay" 
+            [ngClass]="{
+              'badge-cod': order.paymentMethod === 'Cash on Delivery',
+              'badge-online': order.paymentMethod !== 'Cash on Delivery'
+            }"
+          >
+            {{ order.paymentMethod }}
+          </strong>
+        </span>
+        <div class="total-price">
+          <span>{{ revamp()?.[ 'orders-content' ]?.[ 'totalPaidLabel' ] }}</span>
+          <strong>
+            {{ revamp()?.[ 'orders-content' ]?.[ 'currencySymbol' ] }}{{ order.totalAmount }}
+          </strong>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- 2. Unauthenticated View -->
+  <ng-template #pleaseLogin>
+    <div class="empty-state auth-required">
+      <div class="empty-icon">
+        {{ revamp()?.[ 'orders-content' ]?.[ 'authRequiredIcon' ] }}
+      </div>
+      <h3>{{ revamp()?.[ 'orders-content' ]?.[ 'authRequiredTitle' ] }}</h3>
+      <p>{{ revamp()?.[ 'orders-content' ]?.[ 'authRequiredSubtitle' ] }}</p>
+      <button type="button" class="login-redirect-btn" (click)="goToLogin()">
+        {{ revamp()?.[ 'orders-content' ]?.[ 'authRequiredBtnText' ] }}
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- =========================
+     ORDER TRACKING MODAL
+========================== -->
+<div class="modal-overlay" *ngIf="selectedOrder" (click)="closeTracking()">
+  <div class="tracking-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <h3>
+          {{ revamp()?.[ 'orders-content' ]?.[ 'trackingModalTitle' ] }}{{ selectedOrder.id }}
+        </h3>
+        <p class="placed-date">
+          {{ revamp()?.[ 'orders-content' ]?.[ 'trackingStatusLabel' ] }} 
+          <strong>{{ selectedOrder.deliveryStatus }}</strong>
+        </p>
+      </div>
+      <button type="button" class="close-btn" (click)="closeTracking()">×</button>
+    </div>
+
+    <!-- Stepper -->
+    <div class="tracker-stepper">
+      <div 
+        class="step-item" 
+        *ngFor="let step of getOrderTrackingSteps(selectedOrder); let last = last"
+        [ngClass]="step.status"
+      >
+        <div class="step-circle">{{ step.icon }}</div>
+        <div class="step-content">
+          <span class="step-title">{{ step.label }}</span>
+          <span class="step-time">{{ step.date }}</span>
+        </div>
+        <div class="step-line" *ngIf="!last"></div>
+      </div>
+    </div>
+
+    <!-- Delivery Address Details -->
+    <div class="modal-address-summary" *ngIf="selectedOrder.shippingAddress">
+      <h4>{{ revamp()?.[ 'orders-content' ]?.[ 'deliveryAddressHeader' ] }}</h4>
+      <p class="address-text">
+        <strong>{{ selectedOrder.shippingAddress.fullName }}</strong> ({{ selectedOrder.shippingAddress.phone }})<br />
+        {{ selectedOrder.shippingAddress.street }}, {{ selectedOrder.shippingAddress.city }}, {{ selectedOrder.shippingAddress.state }} - {{ selectedOrder.shippingAddress.pincode }}
+      </p>
+    </div>
+
+    <!-- Items Summary Inside Modal -->
+    <div class="modal-items-summary">
+      <h4>
+        {{ revamp()?.[ 'orders-content' ]?.[ 'trackingItemsHeader' ] }}
+      </h4>
+      <div class="mini-item-row" *ngFor="let item of selectedOrder.items">
+        <img 
+          [src]="item.image" 
+          [alt]="item.name"
+          (error)="handleImageError($event)"
+        />
+        <div class="mini-info">
+          <span>{{ item.name }}</span>
+          <small>{{ revamp()?.[ 'orders-content' ]?.[ 'qtyLabel' ] }} {{ item.quantity }}</small>
+        </div>
+        <strong>
+          {{ revamp()?.[ 'orders-content' ]?.[ 'currencySymbol' ] }}{{ item.price * item.quantity }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="modal-footer-info">
+        <span>
+          {{ revamp()?.[ 'orders-content' ]?.[ 'modalPaymentLabel' ] }}
+          <strong 
+            class="badge-pay" 
+            [ngClass]="{
+              'badge-cod': selectedOrder.paymentMethod === 'Cash on Delivery',
+              'badge-online': selectedOrder.paymentMethod !== 'Cash on Delivery'
+            }"
+          >
+            {{ selectedOrder.paymentMethod }}
+          </strong>
+        </span>
+        <span class="modal-total">
+          {{ revamp()?.[ 'orders-content' ]?.[ 'totalPaidLabel' ] }} 
+          <strong>{{ revamp()?.[ 'orders-content' ]?.[ 'currencySymbol' ] }}{{ selectedOrder.totalAmount }}</strong>
+        </span>
+      </div>
+      <button type="button" class="done-btn" (click)="closeTracking()">
+        {{ revamp()?.[ 'orders-content' ]?.[ 'trackingDoneBtn' ] }}
+      </button>
+    </div>
+  </div>
+</div>

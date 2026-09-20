@@ -1,0 +1,295 @@
+.checkout-page {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+  padding: 2.5rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .checkout-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+  }
+
+  .checkout-main {
+    flex: 1.8;
+    width: 100%;
+
+    .page-title-row {
+      margin-bottom: 1.5rem;
+
+      .back-link {
+        background: none;
+        border: none;
+        color: #2563eb;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        color: #0f172a;
+        margin: 0;
+      }
+    }
+  }
+
+  .checkout-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    h2 {
+      font-size: 1.15rem;
+      color: #1e293b;
+      margin: 0 0 1.25rem 0;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+
+    &.half { flex: 1; }
+    &.third { flex: 1; }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    input, select {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      &:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      }
+
+      /* Red border on error */
+      &.input-error {
+        border-color: #ef4444 !important;
+        background-color: #fef2f2;
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+        }
+      }
+    }
+  }
+
+  /* Red validation text */
+  .error-msg {
+    font-size: 0.78rem;
+    color: #dc2626;
+    font-weight: 500;
+    margin-top: 0.15rem;
+  }
+
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .payment-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.active {
+        border-color: #2563eb;
+        background-color: #eff6ff;
+      }
+
+      input[type="radio"] {
+        width: 18px;
+        height: 18px;
+      }
+
+      .card-info {
+        display: flex;
+        flex-direction: column;
+        strong { font-size: 0.95rem; color: #0f172a; }
+        small { font-size: 0.8rem; color: #64748b; }
+      }
+    }
+  }
+
+  .online-details-box {
+    margin-top: 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.25rem;
+
+    .sub-tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+
+      button {
+        background: none;
+        border: 1px solid #cbd5e1;
+        padding: 0.4rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+
+        &.selected {
+          background: #2563eb;
+          color: #fff;
+          border-color: #2563eb;
+        }
+      }
+    }
+
+    .tab-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label { font-size: 0.85rem; font-weight: 600; color: #334155; }
+      
+      input, select {
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.9rem;
+        outline: none;
+
+        &.input-error {
+          border-color: #ef4444 !important;
+          background-color: #fef2f2;
+        }
+      }
+
+      .helper { font-size: 0.75rem; color: #64748b; margin: 0; }
+    }
+  }
+
+  .place-order-submit-btn {
+    width: 100%;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #1d4ed8;
+    }
+  }
+
+  .order-sidebar {
+    flex: 1;
+    width: 100%;
+
+    .order-summary-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      h3 {
+        font-size: 1.15rem;
+        color: #0f172a;
+        margin: 0 0 1rem 0;
+      }
+
+      .sidebar-item-list {
+        max-height: 250px;
+        overflow-y: auto;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
+
+        .sidebar-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.5rem 0;
+
+          img {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+          }
+
+          .item-meta {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            .title { font-size: 0.85rem; font-weight: 600; color: #1e293b; }
+            .qty { font-size: 0.75rem; color: #64748b; }
+          }
+
+          strong { font-size: 0.9rem; }
+        }
+      }
+
+      .summary-lines {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+
+        .line {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.9rem;
+          color: #475569;
+
+          &.total {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.75rem;
+            margin-top: 0.25rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+          }
+
+          .free { color: #16a34a; font-weight: 700; }
+        }
+      }
+    }
+  }
+}

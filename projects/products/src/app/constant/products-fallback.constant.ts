@@ -1,0 +1,141 @@
+export interface ScreenContentItem {
+  key: string;
+  device: string;
+  [key: string]: any;
+}
+
+export interface ScreenContentGroup {
+  screenIdentifier: string;
+  screenContent: ScreenContentItem[];
+}
+
+export interface ProductsMockConfig {
+  screenCoverage: string;
+  moduleIdentifier: string;
+  lastModified: string;
+  content: ScreenContentGroup[];
+}
+
+export const PRODUCTS_FALLBACK: ProductsMockConfig = {
+  screenCoverage: 'single',
+  moduleIdentifier: 'products',
+  lastModified: '2026-09-20T10:00:00',
+  content: [
+    {
+      screenIdentifier: 'products',
+      screenContent: [
+        {
+          key: 'page-header',
+          device: 'both',
+          title: 'Products',
+          subtitle: 'Explore our latest collection of premium tech and gadgets'
+        },
+        {
+          key: 'search',
+          device: 'both',
+          placeholder: 'Search products by name, specs or category...',
+          ariaLabel: 'Search products',
+          clearAriaLabel: 'Clear search',
+          buttonLabel: 'Search',
+          currencySymbol: '₹',
+          addToCartLabel: '🛒 Add to Cart',
+          noResultsTitle: 'No Products Found',
+          noResultsSubtitle: "We couldn't find any items matching your current filters.",
+          resetBtnText: 'Clear Filters'
+        },
+        {
+          key: 'categories',
+          device: 'both',
+          all: 'All',
+          mobiles: 'Mobiles',
+          laptops: 'Laptops',
+          accessories: 'Accessories'
+        },
+        {
+          key: 'prod-1',
+          id: '1',
+          device: 'both',
+          title: 'iPhone 15 Pro Max',
+          category: 'Mobile',
+          description: 'Titanium design, A17 Pro chip, 48MP main camera system with 5x telephoto.',
+          price: '134900',
+          oldPrice: '159900',
+          rating: '★ 4.8',
+          reviewCount: '(2,430 reviews)',
+          image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&q=80',
+          buttonLabel: '🛒 Add to Cart'
+        },
+        {
+          key: 'prod-2',
+          id: '2',
+          device: 'both',
+          title: 'MacBook Pro 16"',
+          category: 'Laptop',
+          description: 'Apple M3 Max chip, 36GB unified memory, Liquid Retina XDR display.',
+          price: '249900',
+          oldPrice: '269900',
+          rating: '★ 4.9',
+          reviewCount: '(1,120 reviews)',
+          image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80',
+          buttonLabel: '🛒 Add to Cart'
+        },
+        {
+          key: 'prod-3',
+          id: '3',
+          device: 'both',
+          title: 'Sony WH-1000XM5',
+          category: 'Accessories',
+          description: 'Industry-leading noise cancelation, Auto NC Optimizer, crystal clear hands-free calling.',
+          price: '29990',
+          oldPrice: '34990',
+          rating: '★ 4.7',
+          reviewCount: '(4,812 reviews)',
+          image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
+          buttonLabel: '🛒 Add to Cart'
+        },
+        {
+          key: 'prod-4',
+          id: '4',
+          device: 'both',
+          title: 'Samsung Galaxy S24 Ultra',
+          category: 'Mobile',
+          description: 'Galaxy AI, 200MP camera, Snapdragon 8 Gen 3 with embedded S Pen.',
+          price: '129999',
+          oldPrice: '139999',
+          rating: '★ 4.7',
+          reviewCount: '(1,890 reviews)',
+          image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&q=80',
+          buttonLabel: '🛒 Add to Cart'
+        },
+        {
+          key: 'prod-5',
+          id: '5',
+          device: 'both',
+          title: 'Dell XPS 15',
+          category: 'Laptop',
+          description: 'OLED 3.5K touch display, Intel Core i9 13th Gen, NVIDIA RTX 4070 GPU.',
+          price: '189900',
+          oldPrice: '210000',
+          rating: '★ 4.6',
+          reviewCount: '(740 reviews)',
+          image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80',
+          buttonLabel: '🛒 Add to Cart'
+        },
+        {
+          key: 'prod-6',
+          id: '6',
+          device: 'both',
+          title: 'Apple Watch Ultra 2',
+          category: 'Accessories',
+          description: 'Rugged 49mm titanium case, precision dual-frequency GPS, up to 72 hrs battery.',
+          price: '89900',
+          oldPrice: '94900',
+          rating: '★ 4.9',
+          reviewCount: '(954 reviews)',
+          image: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500&q=80',
+          buttonLabel: '🛒 Add to Cart'
+        }
+      ]
+    }
+  ]
+};

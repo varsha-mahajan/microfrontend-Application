@@ -1,0 +1,68 @@
+<div class="loader-overlay" *ngIf="loaderService.loading$ | async">
+  <div class="spinner"></div>
+</div>
+
+<nav class="navbar" *ngIf="revamp()?.[ 'shell-navbar' ]">
+  <div class="logo">
+    {{ revamp()?.[ 'shell-navbar' ]?.[ 'brandLogo' ] }}
+  </div>
+
+  <div class="nav-links">
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      {{ revamp()?.[ 'shell-navbar' ]?.[ 'linkHome' ] }}
+    </a>
+
+    <a
+      routerLink="/products"
+      routerLinkActive="active">
+      {{ revamp()?.[ 'shell-navbar' ]?.[ 'linkProducts' ] }}
+    </a>
+
+    <!-- Cart Link with Dynamic Badge -->
+    <a
+      routerLink="/cart"
+      routerLinkActive="active"
+      class="nav-cart-link">
+      <span>{{ revamp()?.[ 'shell-navbar' ]?.[ 'linkCart' ] }}</span>
+      <span class="cart-badge" *ngIf="cartCount > 0">
+        {{ cartCount > 99 ? '99+' : cartCount }}
+      </span>
+    </a>
+
+    <!-- Orders Link -->
+    <a
+      routerLink="/orders"
+      routerLinkActive="active">
+      {{ revamp()?.[ 'shell-navbar' ]?.[ 'linkOrders' ] }}
+    </a>
+
+    <!-- Profile Link: Only displayed when logged in -->
+    <a 
+      routerLink="/profile" 
+      routerLinkActive="active" 
+      *ngIf="isLoggedIn" 
+      class="profile-nav-link">
+      {{ revamp()?.[ 'shell-navbar' ]?.[ 'linkProfile' ] }}
+    </a>
+
+    <!-- Conditional Auth Link / Button -->
+    <ng-container *ngIf="isLoggedIn; else loginBtn">
+      <button type="button" class="logout-btn" (click)="logout()">
+        {{ revamp()?.[ 'shell-navbar' ]?.[ 'buttonLogout' ] }}
+      </button>
+    </ng-container>
+
+    <ng-template #loginBtn>
+      <a
+        routerLink="/login"
+        routerLinkActive="active">
+        {{ revamp()?.[ 'shell-navbar' ]?.[ 'linkLogin' ] }}
+      </a>
+    </ng-template>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

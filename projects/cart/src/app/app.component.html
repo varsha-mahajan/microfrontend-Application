@@ -1,0 +1,284 @@
+<!-- Main Cart View: Renders when the cart module is active -->
+<div class="cart-page">
+
+  <!-- Header -->
+  <div class="cart-header">
+    <div>
+      <h1>
+        {{ revamp()?.[ 'page-header' ]?.[ 'title' ] }}
+      </h1>
+      <p>
+        {{ revamp()?.[ 'page-header' ]?.[ 'subtitle' ] }}
+      </p>
+    </div>
+
+    <div class="cart-count">
+      {{ cartItems.length }}
+      <span>
+        {{ revamp()?.[ 'cart' ]?.[ 'items' ] }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Empty Cart State -->
+  <div class="empty-cart" *ngIf="cartItems.length === 0">
+    <div class="empty-icon" aria-hidden="true">
+      {{ revamp()?.[ 'empty-cart' ]?.[ 'icon' ] }}
+    </div>
+
+    <h2>
+      {{ revamp()?.[ 'empty-cart' ]?.[ 'title' ] }}
+    </h2>
+
+    <p>
+      {{ revamp()?.[ 'empty-cart' ]?.[ 'description' ] }}
+    </p>
+
+    <button
+      type="button"
+      class="continue-shopping"
+      (click)="continueShopping()"
+    >
+      {{ revamp()?.[ 'empty-cart' ]?.[ 'continueShopping' ] }}
+    </button>
+  </div>
+
+  <!-- Cart Content: Populated View -->
+  <div class="cart-content" *ngIf="cartItems.length > 0">
+
+    <!-- Cart Item Catalog -->
+    <div class="cart-items">
+      <div
+        class="cart-item"
+        *ngFor="let item of cartItems; trackBy: trackByCartItem"
+      >
+        <!-- Product Image -->
+        <div class="item-image">
+          <img
+            [src]="item.image || item.thumbnail"
+            [alt]="item.title || item.name"
+            loading="lazy"
+            (error)="$any($event.target).src = 'https://via.placeholder.com/100?text=Product'"
+          />
+        </div>
+
+        <!-- Product Details -->
+        <div class="item-details">
+          <span class="item-category" *ngIf="item.category">
+            {{ item.category }}
+          </span>
+
+          <h2>
+            {{ item.title || item.name }}
+          </h2>
+
+          <p *ngIf="item.description">
+            {{ item.description }}
+          </p>
+
+          <!-- Fixed Item Price with Quantity Calculation -->
+          <div class="item-price">
+            {{ revamp()?.[ 'cart' ]?.[ 'currencySymbol' ] || '₹' }}{{ (parseItemPrice(item.price) * (item.quantity || 1)) | number:'1.0-0' }}
+          </div>
+        </div>
+
+        <!-- Quantity Control -->
+        <div class="quantity-section">
+          <span class="qty-label">
+            {{ revamp()?.[ 'cart' ]?.[ 'quantity' ] }}
+          </span>
+
+          <div class="quantity-control">
+            <button 
+              type="button" 
+              (click)="decreaseQuantity(item)"
+              [attr.aria-label]="revamp()?.[ 'cart' ]?.[ 'decreaseQty' ]"
+            >
+              −
+            </button>
+            <span class="qty-count">{{ item.quantity }}</span>
+            <button 
+              type="button" 
+              (click)="increaseQuantity(item)"
+              [attr.aria-label]="revamp()?.[ 'cart' ]?.[ 'increaseQty' ]"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Remove Action -->
+        <div class="remove-section">
+          <button
+            type="button"
+            class="remove-button"
+            (click)="removeItem(item)"
+          >
+            {{ revamp()?.[ 'cart' ]?.[ 'remove' ] }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div class="cart-actions-toolbar">
+        <button
+          type="button"
+          class="clear-cart"
+          (click)="clearCart()"
+        >
+          {{ revamp()?.[ 'cart' ]?.[ 'clearCart' ] }}
+        </button>
+
+        <button
+          type="button"
+          class="continue-link"
+          (click)="continueShopping()"
+        >
+          {{ revamp()?.[ 'cart' ]?.[ 'continueShoppingLink' ] }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Order Summary Aside -->
+    <aside class="order-summary" aria-label="Order Summary">
+      <h2>
+        {{ revamp()?.[ 'order-summary' ]?.[ 'title' ] }}
+      </h2>
+
+      <!-- Subtotal -->
+      <div class="summary-row">
+        <span>
+          {{ revamp()?.[ 'order-summary' ]?.[ 'subtotal' ] }}
+        </span>
+        <strong>
+          {{ revamp()?.[ 'order-summary' ]?.[ 'currencySymbol' ] || '₹' }}{{ getSubtotal() | number:'1.0-0' }}
+        </strong>
+      </div>
+
+      <!-- Delivery -->
+      <div class="summary-row">
+        <span>
+          {{ revamp()?.[ 'order-summary' ]?.[ 'delivery' ] }}
+        </span>
+        <strong *ngIf="getDeliveryCharge() > 0">
+          {{ revamp()?.[ 'order-summary' ]?.[ 'currencySymbol' ] || '₹' }}{{ getDeliveryCharge() | number:'1.0-0' }}
+        </strong>
+        <strong class="free" *ngIf="getDeliveryCharge() === 0">
+          {{ revamp()?.[ 'order-summary' ]?.[ 'free' ] }}
+        </strong>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Total Payable -->
+      <div class="total-row">
+        <span>
+          {{ revamp()?.[ 'order-summary' ]?.[ 'total' ] }}
+        </span>
+        <strong>
+          {{ revamp()?.[ 'order-summary' ]?.[ 'currencySymbol' ] || '₹' }}{{ getTotal() | number:'1.0-0' }}
+        </strong>
+      </div>
+
+      <!-- Proceed to Checkout Trigger -->
+      <button
+        type="button"
+        class="checkout-button"
+        (click)="proceedToCheckout()"
+      >
+        {{ revamp()?.[ 'order-summary' ]?.[ 'checkout' ] }}
+      </button>
+
+      <!-- Security Guarantee Note -->
+      <p class="secure-text">
+        {{ revamp()?.[ 'order-summary' ]?.[ 'secureCheckout' ] }}
+      </p>
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- Login Modal (Prompted if guest attempts checkout) -->
+<div class="login-modal-overlay" *ngIf="showLoginModal" role="dialog" aria-modal="true">
+  <div class="login-modal">
+
+    <!-- Modal Header -->
+    <div class="login-modal-header">
+      <h2>
+        {{ revamp()?.[ 'login-modal' ]?.[ 'title' ] }}
+      </h2>
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeLoginModal()"
+        aria-label="Close login dialog"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <form (ngSubmit)="loginAndCheckout()" novalidate>
+      
+      <!-- Email Field -->
+      <div class="form-group">
+        <label>
+          {{ revamp()?.[ 'login-modal' ]?.[ 'emailLabel' ] }}
+        </label>
+        <input
+          type="email"
+          [placeholder]="revamp()?.[ 'login-modal' ]?.[ 'emailPlaceholder' ]"
+          [(ngModel)]="loginEmail"
+          name="loginEmail"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label>
+          {{ revamp()?.[ 'login-modal' ]?.[ 'passwordLabel' ] }}
+        </label>
+        <input
+          type="password"
+          [placeholder]="revamp()?.[ 'login-modal' ]?.[ 'passwordPlaceholder' ]"
+          [(ngModel)]="loginPassword"
+          name="loginPassword"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+
+      <!-- Remember Me Checkbox -->
+      <div class="remember-me">
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="rememberMe"
+            name="rememberMe"
+          />
+          {{ revamp()?.[ 'login-modal' ]?.[ 'rememberMe' ] }}
+        </label>
+      </div>
+
+      <!-- Action Buttons -->
+      <button type="submit" class="login-submit-button">
+        {{ revamp()?.[ 'login-modal' ]?.[ 'submitBtn' ] }}
+      </button>
+
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="closeLoginModal()"
+      >
+        {{ revamp()?.[ 'login-modal' ]?.[ 'cancelBtn' ] }}
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- Child routes (e.g., /cart/checkout if nested) -->
+<router-outlet></router-outlet>

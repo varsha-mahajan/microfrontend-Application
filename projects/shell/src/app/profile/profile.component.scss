@@ -1,0 +1,367 @@
+.profile-page {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+  padding: 2.5rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .profile-container {
+    max-width: 1050px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+
+    @media (max-width: 850px) {
+      flex-direction: column;
+    }
+  }
+
+  /* Left Column: Sidebar */
+  .profile-sidebar {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    .user-badge-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      .avatar-large {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background-color: #2563eb;
+        color: #ffffff;
+        font-size: 1.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+      }
+
+      h3 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1.2rem;
+        color: #0f172a;
+        font-weight: 700;
+      }
+
+      .email {
+        margin: 0 0 0.75rem 0;
+        font-size: 0.85rem;
+        color: #64748b;
+      }
+
+      .member-tag {
+        font-size: 0.75rem;
+        background-color: #f1f5f9;
+        color: #475569;
+        padding: 0.25rem 0.65rem;
+        border-radius: 9999px;
+        font-weight: 500;
+      }
+    }
+
+    .profile-nav {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      button {
+        background: none;
+        border: none;
+        padding: 0.95rem 1.25rem;
+        text-align: left;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        border-bottom: 1px solid #f1f5f9;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background-color: #f8fafc;
+        }
+
+        &.active {
+          background-color: #eff6ff;
+          color: #2563eb;
+          border-left: 4px solid #2563eb;
+        }
+
+        &.logout-link {
+          color: #dc2626;
+
+          &:hover {
+            background-color: #fef2f2;
+          }
+        }
+      }
+    }
+
+    .quick-stats-card {
+      .stat-box {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+        }
+
+        .count {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #2563eb;
+        }
+
+        .label {
+          font-size: 0.82rem;
+          color: #64748b;
+          font-weight: 600;
+          margin-top: 0.2rem;
+        }
+      }
+    }
+  }
+
+  /* Right Column: Main Content */
+  .profile-content {
+    flex: 2.2;
+    width: 100%;
+
+    .alert-banner {
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 0.85rem 1.15rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .error-msg {
+      background-color: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      padding: 0.85rem 1.15rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .content-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 1rem;
+        margin-bottom: 1.5rem;
+
+        h2 {
+          font-size: 1.25rem;
+          color: #0f172a;
+          margin: 0 0 0.25rem 0;
+          font-weight: 700;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.85rem;
+          color: #64748b;
+        }
+
+        .edit-btn {
+          background-color: #eff6ff;
+          color: #2563eb;
+          border: 1px solid #bfdbfe;
+          border-radius: 6px;
+          padding: 0.45rem 0.95rem;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #dbeafe;
+          }
+        }
+      }
+    }
+
+    /* Form Fields Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+
+      label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      input,
+      select {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 0.65rem 0.85rem;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+
+        &:disabled {
+          background-color: #f8fafc;
+          color: #64748b;
+          cursor: not-allowed;
+        }
+
+        &:focus:not(:disabled) {
+          border-color: #2563eb;
+          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+      }
+
+      .helper-note {
+        font-size: 0.75rem;
+        color: #94a3b8;
+      }
+    }
+
+    .action-footer {
+      margin-top: 1.5rem;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 1rem;
+    }
+
+    .save-btn {
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #1d4ed8;
+      }
+    }
+
+    /* Saved Addresses Grid */
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .address-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 1.25rem;
+      background: #ffffff;
+
+      .address-badge-row {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+
+        .type-tag {
+          background-color: #f1f5f9;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #334155;
+          padding: 0.2rem 0.5rem;
+          border-radius: 4px;
+        }
+
+        .default-tag {
+          background-color: #e0f2fe;
+          color: #0369a1;
+          font-size: 0.75rem;
+          font-weight: 700;
+          padding: 0.2rem 0.5rem;
+          border-radius: 4px;
+        }
+      }
+
+      strong {
+        font-size: 0.95rem;
+        color: #0f172a;
+      }
+
+      .address-text {
+        margin: 0.5rem 0;
+        font-size: 0.85rem;
+        color: #475569;
+        line-height: 1.4;
+      }
+
+      .phone-text {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 500;
+      }
+    }
+
+    /* Security Tab Form */
+    .security-form {
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+
+      .save-btn {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,305 @@
+// ==========================================
+// 1. SCSS VARIABLES (Design Tokens)
+// ==========================================
+$color-primary: #2563eb;
+$color-primary-hover: darken($color-primary, 8%);
+$color-danger: #ef4444;
+$color-danger-hover: darken($color-danger, 8%);
+$color-danger-bg: #fef2f2;
+$color-bg-page: #f8fafc;
+$color-surface: #ffffff;
+$color-text-main: #0f172a;
+$color-text-muted: #64748b;
+$color-text-label: #1e293b;
+$color-border: #cbd5e1;
+$color-border-light: #e2e8f0;
+
+$radius-card: 16px;
+$radius-input: 8px;
+$radius-avatar: 50%;
+
+$transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ==========================================
+// 2. SCSS MIXINS (Reusable Utilities)
+// ==========================================
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin focus-ring($color: $color-primary, $opacity: 0.15) {
+  outline: none;
+  border-color: $color;
+  box-shadow: 0 0 0 3px rgba($color, $opacity);
+}
+
+@mixin control-typography {
+  font-family: inherit;
+  font-size: 0.925rem;
+  font-weight: 500;
+}
+
+// ==========================================
+// 3. SCSS PLACEHOLDERS (Shared Structures)
+// ==========================================
+%card-elevation {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05),
+              0 8px 10px -6px rgba(0, 0, 0, 0.01);
+}
+
+%btn-base {
+  @include flex-center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: $radius-input;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  gap: 0.5rem;
+  transition: $transition-smooth;
+}
+
+// ==========================================
+// 4. COMPONENT STYLES
+// ==========================================
+.login-page {
+  @include flex-center;
+  min-height: 100vh;
+  background-color: $color-bg-page;
+  padding: 1.5rem;
+}
+
+.login-card {
+  @extend %card-elevation;
+  background: $color-surface;
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  border-radius: $radius-card;
+  text-align: center;
+
+  .avatar-circle {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    background-color: lighten($color-primary, 44%);
+    border-radius: $radius-avatar;
+    margin: 0 auto 1rem;
+  }
+
+  .success-banner {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    border-radius: $radius-input;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    text-align: left;
+  }
+
+  .title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $color-text-main;
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+    color: $color-text-muted;
+    margin: 0 0 1.5rem;
+  }
+
+  form {
+    text-align: left;
+  }
+
+  .form-group {
+    margin-bottom: 1.15rem;
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $color-text-label;
+      margin-bottom: 0.35rem;
+    }
+
+    .form-control {
+      @include control-typography;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid $color-border;
+      border-radius: $radius-input;
+      box-sizing: border-box;
+      transition: $transition-smooth;
+
+      &:focus {
+        @include focus-ring($color-primary, 0.1);
+      }
+
+      &.invalid-input {
+        border-color: $color-danger !important;
+        background-color: $color-danger-bg;
+
+        &:focus {
+          @include focus-ring($color-danger, 0.15);
+        }
+      }
+    }
+
+    .password-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .form-control {
+        padding-right: 2.75rem;
+      }
+
+      .eye-btn {
+        @include flex-center;
+        position: absolute;
+        right: 0.75rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem;
+        color: #6b7280;
+        transition: $transition-smooth;
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          color: $color-text-main;
+        }
+      }
+    }
+
+    .error-msg {
+      color: $color-danger;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+  }
+
+  .options-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    font-size: 0.875rem;
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #334155;
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        accent-color: $color-primary;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .forgot-link {
+      color: $color-primary;
+      text-decoration: none;
+      font-weight: 500;
+      transition: $transition-smooth;
+
+      &:hover {
+        text-decoration: underline;
+        color: $color-primary-hover;
+      }
+    }
+  }
+
+  .btn {
+    @extend %btn-base;
+
+    &.btn-primary {
+      background-color: $color-primary;
+      color: $color-surface;
+
+      &:hover {
+        background-color: $color-primary-hover;
+      }
+    }
+
+    &.btn-google {
+      background-color: $color-surface;
+      border: 1px solid $color-border;
+      color: #334155;
+
+      &:hover {
+        background-color: $color-bg-page;
+      }
+    }
+
+    &.logout-btn {
+      background-color: $color-danger;
+      color: $color-surface;
+
+      &:hover {
+        background-color: $color-danger-hover;
+      }
+    }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.25rem 0;
+    color: #94a3b8;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid $color-border-light;
+    }
+
+    span {
+      padding: 0 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  .footer-text {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: $color-text-muted;
+
+    a {
+      color: $color-primary;
+      text-decoration: none;
+      font-weight: 600;
+      transition: $transition-smooth;
+
+      &:hover {
+        text-decoration: underline;
+        color: $color-primary-hover;
+      }
+    }
+  }
+}

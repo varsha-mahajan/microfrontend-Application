@@ -1,0 +1,211 @@
+<div class="home-page">
+
+  <!-- =========================
+        HERO SECTION
+  ========================== -->
+  <section class="hero" *ngIf="revamp()?.[ 'home-hero' ]">
+    <div class="hero-content">
+      <span class="offer">{{ revamp()?.[ 'home-hero' ]?.[ 'offerTag' ] }}</span>
+
+      <h1>
+        {{ revamp()?.[ 'home-hero' ]?.[ 'headingLine1' ] }}<br />
+        {{ revamp()?.[ 'home-hero' ]?.[ 'headingLine2' ] }}
+      </h1>
+
+      <p>{{ revamp()?.[ 'home-hero' ]?.[ 'subheading' ] }}</p>
+
+      <button 
+        type="button"
+        routerLink="/products"
+        class="shop-btn">
+        {{ revamp()?.[ 'home-hero' ]?.[ 'shopBtnText' ] }}
+      </button>
+
+      <button 
+        type="button" 
+        routerLink="/api-demo" 
+        class="shop-btn"> 
+        {{ revamp()?.[ 'home-hero' ]?.[ 'exploreBtnText' ] }}
+      </button>
+    </div>
+
+    <div class="hero-image">
+      <div class="shopping-icon">🛍️</div>
+      <div class="floating-card card-one">📱</div>
+      <div class="floating-card card-two">💻</div>
+      <div class="floating-card card-three">🎧</div>
+    </div>
+  </section>
+
+  <!-- ==============================================
+        UI CARD STRIP 1: LIVE HIGHLIGHT METRICS (Display Only)
+  =============================================== -->
+  <!-- <section class="metrics-strip" *ngIf="revamp()?.[ 'home-metrics' ]">
+    <div 
+      class="metric-card" 
+      *ngFor="let metric of revamp()?.[ 'home-metrics' ]?.[ 'list' ]">
+      <span class="metric-icon">{{ metric.icon }}</span>
+      <div class="metric-info">
+        <strong>{{ metric.value }}</strong>
+        <p>{{ metric.label }}</p>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- =========================
+        CATEGORIES (3 Items)
+  ========================== -->
+  <section class="section" *ngIf="revamp()?.[ 'home-categories' ]">
+    <div class="section-heading">
+      <div>
+        <h2>{{ revamp()?.[ 'home-categories' ]?.[ 'title' ] }}</h2>
+        <p>{{ revamp()?.[ 'home-categories' ]?.[ 'subtitle' ] }}</p>
+      </div>
+    </div>
+
+    <div class="category-grid">
+      <div 
+        class="category-card" 
+        *ngFor="let cat of revamp()?.[ 'home-categories' ]?.[ 'list' ]"
+        (click)="navigateToCategory(cat.name)">
+        <div class="category-icon">{{ cat.icon }}</div>
+        <h3>{{ cat.name }}</h3>
+        <p>{{ cat.count }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================================
+        UI CARD STRIP 2: PROMO DISCOVERY TILES (Display Only)
+  =============================================== -->
+  <!-- <section class="discovery-strip" *ngIf="revamp()?.[ 'home-discovery-cards' ]">
+    <div 
+      class="discovery-card" 
+      *ngFor="let promo of revamp()?.[ 'home-discovery-cards' ]?.[ 'list' ]">
+      <span class="discovery-badge">{{ promo.badge }}</span>
+      <h3>{{ promo.title }}</h3>
+      <p>{{ promo.tagline }}</p>
+      <div class="discovery-icon">{{ promo.icon }}</div>
+    </div>
+  </section> -->
+
+  <!-- =========================
+        FEATURES
+  ========================== -->
+  <section class="features" *ngIf="revamp()?.[ 'home-features' ]">
+    <div class="feature" *ngFor="let feat of revamp()?.[ 'home-features' ]?.[ 'list' ]">
+      <div class="feature-icon">{{ feat.icon }}</div>
+      <div>
+        <h3>{{ feat.title }}</h3>
+        <p>{{ feat.desc }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+        FEATURED PRODUCTS
+  ========================== -->
+  <section class="section" *ngIf="revamp()?.[ 'home-featured-products' ]">
+    <div class="section-heading">
+      <div>
+        <h2>{{ revamp()?.[ 'home-featured-products' ]?.[ 'title' ] }}</h2>
+        <p>{{ revamp()?.[ 'home-featured-products' ]?.[ 'subtitle' ] }}</p>
+      </div>
+
+      <button
+        type="button"
+        routerLink="/products"
+        class="view-btn">
+        {{ revamp()?.[ 'home-featured-products' ]?.[ 'viewAllBtnText' ] }}
+      </button>
+    </div>
+
+    <div class="product-grid">
+      <div 
+        class="product-card" 
+        *ngFor="let prod of revamp()?.[ 'home-featured-products' ]?.[ 'products' ]">
+        
+        <div class="product-img">{{ prod.img }}</div>
+        <span class="badge" *ngIf="prod.badge">{{ prod.badge }}</span>
+        <h3>{{ prod.title }}</h3>
+
+        <div class="rating">
+          {{ prod.ratingStars }}
+          <span>{{ prod.ratingCount }}</span>
+        </div>
+
+        <div class="price">
+          {{ prod.currentPrice }}
+          <span *ngIf="prod.originalPrice">{{ prod.originalPrice }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================================
+        UI CARD STRIP 3: CUSTOMER TESTIMONIAL CARDS (Display Only)
+  =============================================== -->
+  <!-- <section class="section testimonials-section" *ngIf="revamp()?.[ 'home-testimonials' ]">
+    <div class="section-heading">
+      <div>
+        <h2>{{ revamp()?.[ 'home-testimonials' ]?.[ 'title' ] }}</h2>
+        <p>{{ revamp()?.[ 'home-testimonials' ]?.[ 'subtitle' ] }}</p>
+      </div>
+    </div>
+
+    <div class="testimonial-grid">
+      <div 
+        class="testimonial-card" 
+        *ngFor="let review of revamp()?.[ 'home-testimonials' ]?.[ 'list' ]">
+        <div class="stars">{{ review.stars }}</div>
+        <p class="comment">"{{ review.comment }}"</p>
+        <div class="reviewer">
+          <span class="avatar">{{ review.avatar }}</span>
+          <div>
+            <h4>{{ review.name }}</h4>
+            <small>{{ review.role }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- =========================
+        OFFER BANNER
+  ========================== -->
+  <section class="offer-banner" *ngIf="revamp()?.[ 'home-promos' ]">
+    <div>
+      <span>{{ revamp()?.[ 'home-promos' ]?.[ 'bannerTag' ] }}</span>
+      <h2>{{ revamp()?.[ 'home-promos' ]?.[ 'bannerTitle' ] }}</h2>
+      <p>{{ revamp()?.[ 'home-promos' ]?.[ 'bannerDesc' ] }}</p>
+    </div>
+
+    <button
+      type="button"
+      routerLink="/products">
+      {{ revamp()?.[ 'home-promos' ]?.[ 'bannerBtnText' ] }}
+    </button>
+  </section>
+
+  <!-- ==============================================
+        UI CARD STRIP 4: TRUST & SERVICE ASSURANCES (Display Only)
+  =============================================== -->
+  <section class="trust-grid" *ngIf="revamp()?.[ 'home-trust-badges' ]">
+    <div 
+      class="trust-card" 
+      *ngFor="let trust of revamp()?.[ 'home-trust-badges' ]?.[ 'list' ]">
+      <span class="trust-icon">{{ trust.icon }}</span>
+      <h3>{{ trust.title }}</h3>
+      <p>{{ trust.desc }}</p>
+    </div>
+  </section>
+
+  <!-- =========================
+        NEWSLETTER
+  ========================== -->
+  <section class="newsletter" *ngIf="revamp()?.[ 'home-promos' ]">
+    <h2>{{ revamp()?.[ 'home-promos' ]?.[ 'newsletterTitle' ] }}</h2>
+    <p>{{ revamp()?.[ 'home-promos' ]?.[ 'newsletterDesc' ] }}</p>
+  </section>
+
+</div>

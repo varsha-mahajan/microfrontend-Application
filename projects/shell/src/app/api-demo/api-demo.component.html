@@ -1,0 +1,45 @@
+<div class="api-demo-page">
+
+  <header class="page-header">
+    <h1>API Products</h1>
+    <p>Products loaded live from DummyJSON API</p>
+  </header>
+
+  <!-- Error State Banner -->
+  <div *ngIf="errorMessage" class="error" role="alert">
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="!errorMessage && !products.length" class="loading">
+    <span>Loading products...</span>
+  </div>
+
+  <!-- Product Catalog Grid -->
+  <div class="products-grid" *ngIf="products.length">
+    <article class="product-card" *ngFor="let product of products">
+      
+      <div class="card-media">
+        <img
+          [src]="product.thumbnail"
+          [alt]="product.title"
+          loading="lazy"
+          (error)="$any($event.target).src = 'https://via.placeholder.com/200?text=No+Image'"
+        />
+      </div>
+
+      <div class="card-body">
+        <span class="category-badge">{{ product.category }}</span>
+        <h2 [title]="product.title">{{ product.title }}</h2>
+        <p class="description">{{ product.description }}</p>
+
+        <div class="card-footer">
+          <span class="price">${{ product.price | number:'1.2-2' }}</span>
+          <span class="rating-badge">⭐ {{ product.rating }}</span>
+        </div>
+      </div>
+
+    </article>
+  </div>
+
+</div>

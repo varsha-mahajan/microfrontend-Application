@@ -28,7 +28,7 @@ export const PRODUCTS_FALLBACK: ProductsMockConfig = {
           key: 'page-header',
           device: 'both',
           title: 'Products',
-          subtitle: 'Explore our latest collection of premium tech and gadgets'
+          subtitle: 'Explore our latest collection of premium tech and gadgets const'
         },
         {
           key: 'search',

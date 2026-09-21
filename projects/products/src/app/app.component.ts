@@ -43,8 +43,8 @@ export class AppComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  private readonly JSON_URL = 'assets/data/products.json';
-  private readonly FALLBACK_REMOTE_URL = 'http://localhost:4201/assets/data/aem-mock-data.json';
+  private readonly JSON_URL = 'http://localhost:4201/assets/data/aem-mock-data.json';
+  // private readonly FALLBACK_REMOTE_URL = 'http://localhost:4201/assets/data/aem-mock-data.json';
 
   // Seeded directly from PRODUCTS_FALLBACK mapped dictionary
   productsData = signal<Record<string, any>>(this.extractScreenMap(PRODUCTS_FALLBACK));
@@ -214,7 +214,7 @@ export class AppComponent implements OnInit {
       .get<ProductsMockConfig>(this.JSON_URL)
       .pipe(
         catchError(() => {
-          return this.http.get<ProductsMockConfig>(this.FALLBACK_REMOTE_URL).pipe(
+          return this.http.get<ProductsMockConfig>(this.JSON_URL).pipe(
             catchError((err) => {
               console.warn('Unable to load mock data JSON, defaulting to constant:', err);
               return of(null);

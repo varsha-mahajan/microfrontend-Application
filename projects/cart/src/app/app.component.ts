@@ -46,22 +46,55 @@ export class AppComponent implements OnInit {
     }, {} as Record<string, any>);
   }
 
+  /**
+   * First priority goes to Dynamic JSON data.
+   * If a dynamic key is missing, null, undefined, or an empty/whitespace string,
+   * it falls back to the constant fallback value.
+   */
   private deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
-    const output = { ...target };
+    const output: Record<string, any> = { ...target };
 
-    if (source && typeof source === 'object') {
-      Object.keys(source).forEach((key) => {
+    // If source is missing or invalid, maintain target fallback values
+    if (!source || typeof source !== 'object') {
+      return output;
+    }
+
+    // Merge source values over target
+    Object.keys(source).forEach((key) => {
+      const sourceVal = source[key];
+      const targetVal = target ? target[key] : undefined;
+
+      // Detect empty or whitespace-only string in JSON
+      const isEmptySourceString = typeof sourceVal === 'string' && sourceVal.trim() === '';
+
+      if (
+        typeof sourceVal === 'object' &&
+        sourceVal !== null &&
+        !Array.isArray(sourceVal) &&
+        typeof targetVal === 'object' &&
+        targetVal !== null &&
+        !Array.isArray(targetVal)
+      ) {
+        // Recursive merge for nested dictionary objects
+        output[key] = this.deepMerge(targetVal, sourceVal);
+      } else if (sourceVal !== undefined && sourceVal !== null && !isEmptySourceString) {
+        // 1st Priority: valid dynamic value from JSON
+        output[key] = sourceVal;
+      } else if (targetVal !== undefined) {
+        // Fallback: keep constant value if JSON key is blank or invalid
+        output[key] = targetVal;
+      }
+    });
+
+    // Ensure any keys present in target but completely missing in source are preserved
+    if (target && typeof target === 'object') {
+      Object.keys(target).forEach((key) => {
         if (
-          source[key] &&
-          typeof source[key] === 'object' &&
-          !Array.isArray(source[key]) &&
-          target[key] &&
-          typeof target[key] === 'object' &&
-          !Array.isArray(target[key])
+          output[key] === undefined ||
+          output[key] === null ||
+          (typeof output[key] === 'string' && output[key].trim() === '')
         ) {
-          output[key] = this.deepMerge(target[key], source[key]);
-        } else if (source[key] !== undefined && source[key] !== null) {
-          output[key] = source[key];
+          output[key] = target[key];
         }
       });
     }
@@ -70,9 +103,10 @@ export class AppComponent implements OnInit {
   }
 
   private async loadCartContent(): Promise<void> {
+    const fallbackMap = this.extractScreenMap(CART_FALLBACK);
+
     try {
-      // NOTE: Ensure your port matches your live AEM mock server (e.g., 4202 vs 4201)
-      const response = await fetch('assets/data/aem-data.json');
+      const response = await fetch('http://localhost:4202/assets/data/aem-data.json');
       if (!response.ok) {
         throw new Error(`Status: ${response.status}`);
       }
@@ -80,17 +114,15 @@ export class AppComponent implements OnInit {
       const config: CartMockConfig = await response.json();
 
       if (config && Array.isArray(config.content) && config.content.length > 0) {
-        const fallbackMap = this.extractScreenMap(CART_FALLBACK);
         const dynamicMap = this.extractScreenMap(config);
-
         const mergedData = this.deepMerge(fallbackMap, dynamicMap);
         this.cartData.set(mergedData);
       } else {
-        throw new Error('Invalid JSON structure');
+        throw new Error('Invalid or empty JSON structure');
       }
     } catch (error) {
       console.warn('Unable to load cart aem-data.json, keeping CART_FALLBACK:', error);
-      this.cartData.set(this.extractScreenMap(CART_FALLBACK));
+      this.cartData.set(fallbackMap);
     }
   }
 
@@ -246,13 +278,14 @@ export class AppComponent implements OnInit {
   }
 
   increaseQuantity(item: any): void {
-    item.quantity = (item.quantity || 1) + 1;
+    item.quantity = (Number(item.quantity) || 1) + 1;
     this.saveCartToStorage();
   }
 
   decreaseQuantity(item: any): void {
-    if (item.quantity > 1) {
-      item.quantity--;
+    const currentQty = Number(item.quantity) || 1;
+    if (currentQty > 1) {
+      item.quantity = currentQty - 1;
       this.saveCartToStorage();
     }
   }
@@ -269,8 +302,16 @@ export class AppComponent implements OnInit {
   }
 
   /**
+   * Calculates the total units/quantity of all items in the cart
+   * to keep the cart header pill matched with the shell navbar badge.
+   */
+  getTotalItemCount(): number {
+    return this.cartItems.reduce((acc, item) => acc + (Number(item.quantity) || 1), 0);
+  }
+
+  /**
    * Safely parses price regardless of whether it arrives as a number,
-   * a currency string ("$1,200.00"), or an object/undefined[cite: 1].
+   * a currency string ("₹1,200.00"), or an object/undefined[cite: 1].
    */
   parseItemPrice(price: any): number {
     if (price === null || price === undefined) return 0;
@@ -284,7 +325,7 @@ export class AppComponent implements OnInit {
   getSubtotal(): number {
     return this.cartItems.reduce((acc, item) => {
       const numericPrice = this.parseItemPrice(item.price);
-      return acc + numericPrice * (item.quantity || 1);
+      return acc + numericPrice * (Number(item.quantity) || 1);
     }, 0);
   }
 
@@ -296,3 +337,4 @@ export class AppComponent implements OnInit {
     return this.getSubtotal() + this.getDeliveryCharge();
   }
 }
+

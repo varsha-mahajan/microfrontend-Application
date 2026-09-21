@@ -12,8 +12,25 @@ import { SHELL_FALLBACK, ShellMockConfig } from './constant/shells-fallback.cons
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  isLoggedIn: boolean = false;
-  cartCount: number = 0;
+  // Signals State
+  isLoggedInSignal = signal<boolean>(false);
+  cartCountSignal = signal<number>(0);
+
+  // Backward-compatibility getters & setters for existing template bindings
+  get isLoggedIn(): boolean {
+    return this.isLoggedInSignal();
+  }
+  set isLoggedIn(val: boolean) {
+    this.isLoggedInSignal.set(val);
+  }
+
+  get cartCount(): number {
+    return this.cartCountSignal();
+  }
+  set cartCount(val: number) {
+    this.cartCountSignal.set(val);
+  }
+
   private authSub!: Subscription;
 
   // Signal storing dictionary-mapped content, seeded directly from constant fallback
@@ -25,7 +42,8 @@ export class AppComponent implements OnInit, OnDestroy {
   };
 
   private authListener = (event: any) => {
-    this.isLoggedIn = event?.detail?.isLoggedIn ?? (localStorage.getItem('isLoggedIn') === 'true');
+    const status = event?.detail?.isLoggedIn ?? (localStorage.getItem('isLoggedIn') === 'true');
+    this.isLoggedInSignal.set(status);
     this.refreshCartFromStorage();
   };
 
@@ -53,7 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.refreshCartFromStorage();
 
     this.authSub = this.authService.isLoggedIn$.subscribe((status) => {
-      this.isLoggedIn = status;
+      this.isLoggedInSignal.set(status);
       this.refreshCartFromStorage();
     });
 
@@ -66,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private checkAuthState(): void {
-    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    this.isLoggedInSignal.set(localStorage.getItem('isLoggedIn') === 'true');
   }
 
   private refreshCartFromStorage(): void {
@@ -85,19 +103,25 @@ export class AppComponent implements OnInit, OnDestroy {
       const items = JSON.parse(rawCart);
       this.computeCartCount(items);
     } catch {
-      this.cartCount = 0;
+      this.cartCountSignal.set(0);
     }
   }
 
+  /**
+   * Sums the total quantity across all cart items so the badge count
+   * matches the cart module header.
+   */
   private computeCartCount(items: any[]): void {
-    if (!Array.isArray(items)) {
-      this.cartCount = 0;
+    if (!Array.isArray(items) || items.length === 0) {
+      this.cartCountSignal.set(0);
       return;
     }
-    this.cartCount = items.reduce(
+
+    const totalQuantity = items.reduce(
       (total, item) => total + (Number(item.quantity) || 1),
       0
     );
+    this.cartCountSignal.set(totalQuantity);
   }
 
   /**
@@ -118,32 +142,44 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Deep merges target and source objects so missing keys fall back to constant
+   * Deep merges target and source objects so missing or empty keys fall back to constant
    */
   private deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
-    const output = { ...target };
+    const output: Record<string, any> = { ...target };
 
-    if (source && typeof source === 'object') {
-      Object.keys(source).forEach((key) => {
-        if (
-          source[key] &&
-          typeof source[key] === 'object' &&
-          !Array.isArray(source[key]) &&
-          target[key] &&
-          typeof target[key] === 'object' &&
-          !Array.isArray(target[key])
-        ) {
-          output[key] = this.deepMerge(target[key], source[key]);
-        } else if (source[key] !== undefined && source[key] !== null) {
-          output[key] = source[key];
-        }
-      });
+    if (!source || typeof source !== 'object') {
+      return output;
     }
+
+    Object.keys(source).forEach((key) => {
+      const sourceVal = source[key];
+      const targetVal = target ? target[key] : undefined;
+
+      // Check if value is an empty string or whitespace
+      const isEmptyString = typeof sourceVal === 'string' && sourceVal.trim() === '';
+
+      if (sourceVal === undefined || sourceVal === null || isEmptyString) {
+        if (targetVal !== undefined) {
+          output[key] = targetVal;
+        }
+      } else if (
+        typeof sourceVal === 'object' &&
+        !Array.isArray(sourceVal) &&
+        typeof targetVal === 'object' &&
+        !Array.isArray(targetVal)
+      ) {
+        output[key] = this.deepMerge(targetVal, sourceVal);
+      } else {
+        output[key] = sourceVal;
+      }
+    });
 
     return output;
   }
 
   private async loadShellContent(): Promise<void> {
+    const fallbackMap = this.extractScreenMap(SHELL_FALLBACK);
+
     try {
       const response = await fetch('assets/data/shell-mock.json');
       if (!response.ok) {
@@ -153,10 +189,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const config: ShellMockConfig = await response.json();
 
       if (config && Array.isArray(config.content) && config.content.length > 0) {
-        const fallbackMap = this.extractScreenMap(SHELL_FALLBACK);
         const dynamicMap = this.extractScreenMap(config);
-
-        // Merge dynamic JSON on top of constant fallback
         const mergedData = this.deepMerge(fallbackMap, dynamicMap);
         this.shellData.set(mergedData);
       } else {
@@ -164,7 +197,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.warn('Failed to load JSON data, falling back to SHELL_FALLBACK:', error);
-      this.shellData.set(this.extractScreenMap(SHELL_FALLBACK));
+      this.shellData.set(fallbackMap);
     }
   }
 
@@ -177,8 +210,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.logout();
-    this.isLoggedIn = false;
-    this.cartCount = 0;
+    this.isLoggedInSignal.set(false);
+    this.cartCountSignal.set(0);
 
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');

@@ -19,7 +19,7 @@ export interface CartMockConfig {
 export const CART_FALLBACK: CartMockConfig = {
   screenCoverage: 'single',
   moduleIdentifier: 'cart',
-  lastModified: '2026-09-18T10:00:00',
+  lastModified: '2026-09-21T00:44:00',
   content: [
     {
       screenIdentifier: 'cart-app-content',

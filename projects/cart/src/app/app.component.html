@@ -12,8 +12,9 @@
       </p>
     </div>
 
+    <!-- Header Count Badge: Sum of all item quantities -->
     <div class="cart-count">
-      {{ cartItems.length }}
+      {{ getTotalItemCount() }}
       <span>
         {{ revamp()?.[ 'cart' ]?.[ 'items' ] }}
       </span>

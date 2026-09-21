@@ -103,38 +103,80 @@ export class CheckoutComponent implements OnInit {
     }, {} as Record<string, any>);
   }
 
+  /**
+   * First priority goes to Dynamic JSON data.
+   * If a dynamic key is missing, null, undefined, or an empty/whitespace string,
+   * it falls back to the constant fallback value.
+   */
   private deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
-    const output = { ...target };
-    if (source && typeof source === 'object') {
-      Object.keys(source).forEach((key) => {
+    const output: Record<string, any> = { ...target };
+
+    if (!source || typeof source !== 'object') {
+      return output;
+    }
+
+    Object.keys(source).forEach((key) => {
+      const sourceVal = source[key];
+      const targetVal = target ? target[key] : undefined;
+
+      // Detect empty or whitespace-only string in JSON
+      const isEmptySourceString = typeof sourceVal === 'string' && sourceVal.trim() === '';
+
+      if (
+        typeof sourceVal === 'object' &&
+        sourceVal !== null &&
+        !Array.isArray(sourceVal) &&
+        typeof targetVal === 'object' &&
+        targetVal !== null &&
+        !Array.isArray(targetVal)
+      ) {
+        output[key] = this.deepMerge(targetVal, sourceVal);
+      } else if (sourceVal !== undefined && sourceVal !== null && !isEmptySourceString) {
+        // 1st Priority: valid dynamic value from JSON
+        output[key] = sourceVal;
+      } else if (targetVal !== undefined) {
+        // Fallback: keep constant value if JSON key is blank or invalid
+        output[key] = targetVal;
+      }
+    });
+
+    // Ensure any keys present in target but completely missing in source are preserved
+    if (target && typeof target === 'object') {
+      Object.keys(target).forEach((key) => {
         if (
-          source[key] &&
-          typeof source[key] === 'object' &&
-          !Array.isArray(source[key]) &&
-          target[key] &&
-          typeof target[key] === 'object' &&
-          !Array.isArray(target[key])
+          output[key] === undefined ||
+          output[key] === null ||
+          (typeof output[key] === 'string' && output[key].trim() === '')
         ) {
-          output[key] = this.deepMerge(target[key], source[key]);
-        } else if (source[key] !== undefined && source[key] !== null) {
-          output[key] = source[key];
+          output[key] = target[key];
         }
       });
     }
+
     return output;
   }
 
   private async loadCheckoutContent(): Promise<void> {
+    const fallbackMap = this.extractScreenMap(SHELL_FALLBACK);
+
     try {
       const response = await fetch('assets/data/shell-mock.json');
-      if (response.ok) {
-        const config: ShellMockConfig = await response.json();
-        const fallbackMap = this.extractScreenMap(SHELL_FALLBACK);
-        const dynamicMap = this.extractScreenMap(config);
-        this.checkoutDataUi.set(this.deepMerge(fallbackMap, dynamicMap));
+      if (!response.ok) {
+        throw new Error(`Status: ${response.status}`);
       }
-    } catch {
-      this.checkoutDataUi.set(this.extractScreenMap(SHELL_FALLBACK));
+
+      const config: ShellMockConfig = await response.json();
+
+      if (config && Array.isArray(config.content) && config.content.length > 0) {
+        const dynamicMap = this.extractScreenMap(config);
+        const mergedData = this.deepMerge(fallbackMap, dynamicMap);
+        this.checkoutDataUi.set(mergedData);
+      } else {
+        throw new Error('Invalid or empty JSON structure');
+      }
+    } catch (error) {
+      console.warn('Unable to load shell-mock.json, keeping SHELL_FALLBACK:', error);
+      this.checkoutDataUi.set(fallbackMap);
     }
   }
 
@@ -144,7 +186,7 @@ export class CheckoutComponent implements OnInit {
 
   parsePrice(price: string | number): number {
     if (typeof price === 'number') return price;
-    return Number(price.replace(/[^0-9.-]+/g, '')) || 0;
+    return Number(String(price).replace(/[^0-9.-]+/g, '')) || 0;
   }
 
   getSubtotal(): number {
@@ -165,14 +207,13 @@ export class CheckoutComponent implements OnInit {
   // --- Realtime Input Formatters ---
 
   formatCardNumber(event: any): void {
-    let value = event.target.value.replace(/\D/g, '').substring(0, 16);
-    // Split into chunks of 4
+    const value = event.target.value.replace(/\D/g, '').substring(0, 16);
     const chunks = value.match(/.{1,4}/g);
     this.checkoutData.cardNumber = chunks ? chunks.join(' ') : value;
   }
 
   formatExpiry(event: any): void {
-    let value = event.target.value.replace(/\D/g, '').substring(0, 4);
+    const value = event.target.value.replace(/\D/g, '').substring(0, 4);
     if (value.length >= 3) {
       this.checkoutData.cardExpiry = `${value.substring(0, 2)}/${value.substring(2, 4)}`;
     } else {

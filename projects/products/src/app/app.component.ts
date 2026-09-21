@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  private readonly JSON_URL = 'assets/data/aem-mock-data.json';
+  private readonly JSON_URL = 'assets/data/products.json';
   private readonly FALLBACK_REMOTE_URL = 'http://localhost:4201/assets/data/aem-mock-data.json';
 
   // Seeded directly from PRODUCTS_FALLBACK mapped dictionary
@@ -141,7 +141,9 @@ export class AppComponent implements OnInit {
   }
 
   private extractScreenMap(config: ProductsMockConfig): Record<string, any> {
-    const screenGroup = config?.content?.find((c) => c.screenIdentifier === 'products');
+    const screenGroup = config?.content?.find(
+      (c) => c.screenIdentifier === 'products-app-content' || c.screenIdentifier === 'products'
+    );
     const screenContent = screenGroup?.screenContent || [];
 
     return screenContent.reduce((acc, item) => {
@@ -152,22 +154,52 @@ export class AppComponent implements OnInit {
     }, {} as Record<string, any>);
   }
 
+  /**
+   * First priority goes to Dynamic JSON data.
+   * If a dynamic key is missing, null, undefined, or an empty/whitespace string,
+   * it falls back to the constant fallback value.
+   */
   private deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
-    const output = { ...target };
+    const output: Record<string, any> = { ...target };
 
-    if (source && typeof source === 'object') {
-      Object.keys(source).forEach((key) => {
+    if (!source || typeof source !== 'object') {
+      return output;
+    }
+
+    Object.keys(source).forEach((key) => {
+      const sourceVal = source[key];
+      const targetVal = target ? target[key] : undefined;
+
+      // Check if value is blank/whitespace
+      const isEmptySourceString = typeof sourceVal === 'string' && sourceVal.trim() === '';
+
+      if (
+        typeof sourceVal === 'object' &&
+        sourceVal !== null &&
+        !Array.isArray(sourceVal) &&
+        typeof targetVal === 'object' &&
+        targetVal !== null &&
+        !Array.isArray(targetVal)
+      ) {
+        output[key] = this.deepMerge(targetVal, sourceVal);
+      } else if (sourceVal !== undefined && sourceVal !== null && !isEmptySourceString) {
+        // 1st Priority: valid dynamic value from JSON
+        output[key] = sourceVal;
+      } else if (targetVal !== undefined) {
+        // Fallback: keep constant value if JSON key is blank or invalid
+        output[key] = targetVal;
+      }
+    });
+
+    // Ensure any keys present in target but completely missing in source are preserved
+    if (target && typeof target === 'object') {
+      Object.keys(target).forEach((key) => {
         if (
-          source[key] &&
-          typeof source[key] === 'object' &&
-          !Array.isArray(source[key]) &&
-          target[key] &&
-          typeof target[key] === 'object' &&
-          !Array.isArray(target[key])
+          output[key] === undefined ||
+          output[key] === null ||
+          (typeof output[key] === 'string' && output[key].trim() === '')
         ) {
-          output[key] = this.deepMerge(target[key], source[key]);
-        } else if (source[key] !== undefined && source[key] !== null) {
-          output[key] = source[key];
+          output[key] = target[key];
         }
       });
     }
@@ -176,6 +208,8 @@ export class AppComponent implements OnInit {
   }
 
   private loadProductsContent(): void {
+    const fallbackMap = this.extractScreenMap(PRODUCTS_FALLBACK);
+
     this.http
       .get<ProductsMockConfig>(this.JSON_URL)
       .pipe(
@@ -191,13 +225,11 @@ export class AppComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response && Array.isArray(response.content) && response.content.length > 0) {
-          const fallbackMap = this.extractScreenMap(PRODUCTS_FALLBACK);
           const dynamicMap = this.extractScreenMap(response);
-
           const merged = this.deepMerge(fallbackMap, dynamicMap);
           this.productsData.set(merged);
         } else {
-          this.productsData.set(this.extractScreenMap(PRODUCTS_FALLBACK));
+          this.productsData.set(fallbackMap);
         }
       });
   }

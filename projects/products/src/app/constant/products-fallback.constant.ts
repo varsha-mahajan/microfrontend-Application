@@ -19,10 +19,10 @@ export interface ProductsMockConfig {
 export const PRODUCTS_FALLBACK: ProductsMockConfig = {
   screenCoverage: 'single',
   moduleIdentifier: 'products',
-  lastModified: '2026-09-20T10:00:00',
+  lastModified: '2026-09-21T01:06:00',
   content: [
     {
-      screenIdentifier: 'products',
+      screenIdentifier: 'products-app-content',
       screenContent: [
         {
           key: 'page-header',

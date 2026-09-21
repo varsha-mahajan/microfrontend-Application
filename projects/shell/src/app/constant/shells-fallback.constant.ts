@@ -170,7 +170,7 @@ export const SHELL_FALLBACK: ShellMockConfig = {
         {
           key: 'checkout-content',
           device: 'both',
-          pageTitle: 'Checkout(aem)',
+          pageTitle: 'Checkout(constant)',
           backToCart: '← Back to Cart',
           shippingSectionTitle: '1. Shipping Address one',
           fullNameLabel: 'Full Name *',

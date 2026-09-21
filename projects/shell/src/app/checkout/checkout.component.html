@@ -5,27 +5,27 @@
     <div class="checkout-main">
       <div class="page-title-row">
         <button type="button" class="back-link" (click)="backToCart()">
-          {{ revamp()?.[ 'checkout-content' ]?.backToCart || '← Back to Cart' }}
+          {{ revamp()?.[ 'checkout-content' ]?.backToCart }}
         </button>
-        <h1>{{ revamp()?.[ 'checkout-content' ]?.pageTitle || 'Checkout' }}</h1>
+        <h1>{{ revamp()?.[ 'checkout-content' ]?.pageTitle}}</h1>
       </div>
 
       <form #checkoutForm="ngForm" (ngSubmit)="placeOrder(checkoutForm)" novalidate>
         
         <!-- 1. Shipping Address Section -->
         <section class="checkout-card">
-          <h2>{{ revamp()?.[ 'checkout-content' ]?.shippingSectionTitle || '1. Shipping Address' }}</h2>
+          <h2>{{ revamp()?.[ 'checkout-content' ]?.shippingSectionTitle}}</h2>
           
           <div class="form-row">
             <!-- Full Name -->
             <div class="form-group half">
-              <label>{{ revamp()?.[ 'checkout-content' ]?.fullNameLabel || 'Full Name *' }}</label>
+              <label>{{ revamp()?.[ 'checkout-content' ]?.fullNameLabel }}</label>
               <input 
                 type="text" 
                 [(ngModel)]="checkoutData.fullName" 
                 #fullName="ngModel" 
                 name="fullName" 
-                [placeholder]="revamp()?.[ 'checkout-content' ]?.fullNamePlaceholder || 'e.g. John Doe'" 
+                [placeholder]="revamp()?.[ 'checkout-content' ]?.fullNamePlaceholder " 
                 required 
                 minlength="3"
                 pattern="^[a-zA-Z\s.]+$"
@@ -40,13 +40,13 @@
 
             <!-- Phone Number -->
             <div class="form-group half">
-              <label>{{ revamp()?.[ 'checkout-content' ]?.phoneLabel || 'Phone Number *' }}</label>
+              <label>{{ revamp()?.[ 'checkout-content' ]?.phoneLabel  }}</label>
               <input 
                 type="tel" 
                 [(ngModel)]="checkoutData.phone" 
                 #phone="ngModel" 
                 name="phone" 
-                [placeholder]="revamp()?.[ 'checkout-content' ]?.phonePlaceholder || '10-digit mobile number'" 
+                [placeholder]="revamp()?.[ 'checkout-content' ]?.phonePlaceholder  " 
                 required 
                 maxlength="10"
                 (keypress)="onlyNumbers($event)"
@@ -62,7 +62,7 @@
 
           <!-- Email Address -->
           <div class="form-group">
-            <label>{{ revamp()?.[ 'checkout-content' ]?.emailLabel || 'Email Address *' }}</label>
+            <label>{{ revamp()?.[ 'checkout-content' ]?.emailLabel }}</label>
             <input 
               type="email" 
               [(ngModel)]="checkoutData.email" 
@@ -81,13 +81,13 @@
 
           <!-- Street Address -->
           <div class="form-group">
-            <label>{{ revamp()?.[ 'checkout-content' ]?.streetLabel || 'Street Address / Flat No. *' }}</label>
+            <label>{{ revamp()?.[ 'checkout-content' ]?.streetLabel }}</label>
             <input 
               type="text" 
               [(ngModel)]="checkoutData.street" 
               #street="ngModel" 
               name="street" 
-              [placeholder]="revamp()?.[ 'checkout-content' ]?.streetPlaceholder || 'Flat/House No., Building, Street Name'" 
+              [placeholder]="revamp()?.[ 'checkout-content' ]?.streetPlaceholder " 
               required 
               minlength="6"
               [class.input-error]="(street.invalid && street.touched) || (submitted && street.invalid)"
@@ -101,13 +101,13 @@
           <div class="form-row">
             <!-- City -->
             <div class="form-group third">
-              <label>{{ revamp()?.[ 'checkout-content' ]?.cityLabel || 'City *' }}</label>
+              <label>{{ revamp()?.[ 'checkout-content' ]?.cityLabel' }}</label>
               <input 
                 type="text" 
                 [(ngModel)]="checkoutData.city" 
                 #city="ngModel" 
                 name="city" 
-                [placeholder]="revamp()?.[ 'checkout-content' ]?.cityPlaceholder || 'City'" 
+                [placeholder]="revamp()?.[ 'checkout-content' ]?.cityPlaceholder " 
                 required 
                 minlength="2"
                 pattern="^[a-zA-Z\s]+$"
@@ -121,13 +121,13 @@
 
             <!-- State -->
             <div class="form-group third">
-              <label>{{ revamp()?.[ 'checkout-content' ]?.stateLabel || 'State *' }}</label>
+              <label>{{ revamp()?.[ 'checkout-content' ]?.stateLabel ' }}</label>
               <input 
                 type="text" 
                 [(ngModel)]="checkoutData.state" 
                 #state="ngModel" 
                 name="state" 
-                [placeholder]="revamp()?.[ 'checkout-content' ]?.statePlaceholder || 'State'" 
+                [placeholder]="revamp()?.[ 'checkout-content' ]?.statePlaceholder " 
                 required 
                 minlength="2"
                 [class.input-error]="(state.invalid && state.touched) || (submitted && state.invalid)"
@@ -139,7 +139,7 @@
 
             <!-- Pincode -->
             <div class="form-group third">
-              <label>{{ revamp()?.[ 'checkout-content' ]?.pincodeLabel || 'Pincode *' }}</label>
+              <label>{{ revamp()?.[ 'checkout-content' ]?.pincodeLabel' }}</label>
               <input 
                 type="text" 
                 [(ngModel)]="checkoutData.pincode" 
@@ -176,8 +176,8 @@
             <label class="payment-card" [class.active]="checkoutData.paymentMethod === 'COD'">
               <input type="radio" name="paymentMethod" value="COD" [(ngModel)]="checkoutData.paymentMethod" />
               <div class="card-info">
-                <strong>{{ revamp()?.[ 'checkout-content' ]?.codPaymentTitle || 'Cash on Delivery (COD)' }}</strong>
-                <small>{{ revamp()?.[ 'checkout-content' ]?.codPaymentSubtitle || 'Pay with cash upon arrival' }}</small>
+                <strong>{{ revamp()?.[ 'checkout-content' ]?.codPaymentTitle  }}</strong>
+                <small>{{ revamp()?.[ 'checkout-content' ]?.codPaymentSubtitle  }}</small>
               </div>
             </label>
           </div>
@@ -190,34 +190,34 @@
                 [class.selected]="checkoutData.onlineSubMethod === 'UPI'" 
                 (click)="checkoutData.onlineSubMethod = 'UPI'"
               >
-                {{ revamp()?.[ 'checkout-content' ]?.upiTabLabel || 'UPI' }}
+                {{ revamp()?.[ 'checkout-content' ]?.upiTabLabel }}
               </button>
               <button 
                 type="button" 
                 [class.selected]="checkoutData.onlineSubMethod === 'CARD'" 
                 (click)="checkoutData.onlineSubMethod = 'CARD'"
               >
-                {{ revamp()?.[ 'checkout-content' ]?.cardTabLabel || 'Card' }}
+                {{ revamp()?.[ 'checkout-content' ]?.cardTabLabel  }}
               </button>
               <button 
                 type="button" 
                 [class.selected]="checkoutData.onlineSubMethod === 'NETBANKING'" 
                 (click)="checkoutData.onlineSubMethod = 'NETBANKING'"
               >
-                {{ revamp()?.[ 'checkout-content' ]?.netbankingTabLabel || 'Net Banking' }}
+                {{ revamp()?.[ 'checkout-content' ]?.netbankingTabLabel  }}
               </button>
             </div>
 
             <!-- UPI Sub-Form -->
             <div class="tab-pane" *ngIf="checkoutData.onlineSubMethod === 'UPI'">
               <div class="form-group">
-                <label>{{ revamp()?.[ 'checkout-content' ]?.upiIdLabel || 'UPI ID (VPA) *' }}</label>
+                <label>{{ revamp()?.[ 'checkout-content' ]?.upiIdLabel  }}</label>
                 <input 
                   type="text" 
                   [(ngModel)]="checkoutData.upiId" 
                   #upiId="ngModel"
                   name="upiId" 
-                  [placeholder]="revamp()?.[ 'checkout-content' ]?.upiIdPlaceholder || 'e.g. yourname@okhdfcbank'" 
+                  [placeholder]="revamp()?.[ 'checkout-content' ]?.upiIdPlaceholder " 
                   pattern="^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$"
                   [class.input-error]="submitted && checkoutData.onlineSubMethod === 'UPI' && (!checkoutData.upiId || upiId.invalid)"
                 />
@@ -286,7 +286,7 @@
             <!-- Net Banking Sub-Form -->
             <div class="tab-pane" *ngIf="checkoutData.onlineSubMethod === 'NETBANKING'">
               <div class="form-group">
-                <label>{{ revamp()?.[ 'checkout-content' ]?.selectBankLabel || 'Select Bank *' }}</label>
+                <label>{{ revamp()?.[ 'checkout-content' ]?.selectBankLabel  }}</label>
                 <select [(ngModel)]="checkoutData.selectedBank" name="selectedBank">
                   <option value="HDFC Bank">HDFC Bank</option>
                   <option value="State Bank of India">State Bank of India</option>

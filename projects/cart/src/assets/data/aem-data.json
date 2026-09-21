@@ -1,7 +1,7 @@
 {
   "screenCoverage": "single",
   "moduleIdentifier": "cart",
-  "lastModified": "2026-09-18T10:00:00",
+  "lastModified": "2026-09-21T00:44:00",
   "content": [
     {
       "screenIdentifier": "cart-app-content",
@@ -9,8 +9,8 @@
         {
           "key": "page-header",
           "device": "both",
-          "title": "Shopping Cart",
-          "subtitle": "Manage your items and review before checkout"
+        "title": "Shopping Cart aem",
+          "subtitle": "Manage your items and review before checkout "
         },
         {
           "key": "cart",
@@ -28,7 +28,7 @@
           "key": "empty-cart",
           "device": "both",
           "icon": "🛒",
-          "title": " Your cart is empty ",
+          "title": "Your cart is empty",
           "description": "Looks like you haven't added any items yet.",
           "continueShopping": "Continue Shopping"
         },

@@ -1,7 +1,7 @@
 {
   "screenCoverage": "single",
   "moduleIdentifier": "shell",
-  "lastModified": "2026-09-20T10:00:00",
+  "lastModified": "2026-09-21T01:18:00",
   "content": [
     {
       "screenIdentifier": "shell-app-content",
@@ -15,8 +15,8 @@
           "linkCart": "🛒 Cart",
           "linkOrders": "Orders",
           "linkProfile": "👤 Profile",
-          "linkLogin": "LogIn",
-          "buttonLogout": "LogOut"
+          "linkLogin": "Login",
+          "buttonLogout": "Logout"
         },
         {
           "key": "cart",
@@ -105,7 +105,7 @@
           "loggedInSubtitle": "You are currently logged in to your account.",
           "logoutBtnText": "Logout",
           "welcomeTitle": "Welcome Back",
-          "welcomeSubtitle": "Please enter your details to sign in ",
+          "welcomeSubtitle": "Please enter your details to sign in",
           "signupTitle": "Create Account",
           "signupSubtitle": "Please enter your details to sign up",
           "googleButtonText": "Continue with Google",
@@ -131,15 +131,16 @@
           "fullNamePlaceholder": "John Doe",
           "fullNameRequiredError": "Full name is required.",
           "confirmPasswordLabel": "Confirm Password",
+          "confirmPasswordPlaceholder": "••••••••",
           "signUpButtonText": "Create Account",
           "orDividerText": "OR"
         },
         {
           "key": "checkout-content",
           "device": "both",
-          "pageTitle": "Checkout(aem)",
+          "pageTitle": "Checkout",
           "backToCart": "← Back to Cart",
-          "shippingSectionTitle": "1. Shipping Address one",
+          "shippingSectionTitle": "1. Shipping Address",
           "fullNameLabel": "Full Name *",
           "fullNamePlaceholder": "John Doe",
           "phoneLabel": "Phone Number *",
@@ -186,12 +187,12 @@
           "key": "profile-content",
           "device": "both",
           "memberSincePrefix": "Member since",
-          "tabPersonalInfo": "👤 Personal Information",
+          "tabPersonalInfo": "👤 Personal Information ",
           "tabAddresses": "📍 Saved Addresses",
           "tabSecurity": "🔒 Login & Security",
           "tabLogout": "🚪 Logout",
           "totalOrdersLabel": "Total Orders",
-          "personalInfoTitle": "Personal Information",
+          "personalInfoTitle": "Personal Information ",
           "personalInfoSubtitle": "Manage your personal details and contact preferences",
           "editProfileBtn": "Edit Profile",
           "cancelBtn": "Cancel",
@@ -221,7 +222,7 @@
           "key": "home-hero",
           "device": "both",
           "offerTag": "🔥 Special Offer",
-          "headingLine1": "Shop Smart",
+          "headingLine1": "Shop Smart ",
           "headingLine2": "Shop Everything",
           "subheading": "Discover the latest products at amazing prices. Find electronics, fashion, accessories and more.",
           "shopBtnText": "Shop Now →",

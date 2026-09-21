@@ -53,7 +53,7 @@
       [class.active]="selectedCategory().toLowerCase() === category.value.toLowerCase()"
       (click)="selectCategory(category.value)"
     >
-      {{ category.label }}
+      {{ revamp()?.[ 'categories' ]?.[ category.value.toLowerCase() ] || category.label }}
     </button>
   </nav>
 
@@ -99,10 +99,10 @@
         <!-- Price -->
         <div class="price-row">
           <span class="price">
-            {{ revamp()?.[ 'search' ]?.[ 'currencySymbol' ] }}{{ product.price | number }}
+            {{ revamp()?.[ 'search' ]?.[ 'currencySymbol' ] || '₹' }}{{ product.price | number }}
           </span>
           <span class="old-price" *ngIf="product.oldPrice">
-            {{ revamp()?.[ 'search' ]?.[ 'currencySymbol' ] }}{{ product.oldPrice | number }}
+            {{ revamp()?.[ 'search' ]?.[ 'currencySymbol' ] || '₹' }}{{ product.oldPrice | number }}
           </span>
         </div>
 

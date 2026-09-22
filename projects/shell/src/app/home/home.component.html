@@ -1,6 +1,23 @@
 <div class="home-page">
 
   <!-- =========================
+        LANGUAGE SWITCHER TOOLBAR
+  ========================== -->
+  <div class="home-lang-toolbar">
+    <div class="lang-switch-group" role="group" aria-label="Select Language">
+      <button
+        type="button"
+        *ngFor="let lang of availableLanguages"
+        class="lang-pill"
+        [class.active]="selectedLang() === lang.code"
+        (click)="changeLanguage(lang.code)"
+      >
+        {{ lang.label }}
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================
         HERO SECTION
   ========================== -->
   <section class="hero" *ngIf="revamp()?.[ 'home-hero' ]">
@@ -37,21 +54,6 @@
     </div>
   </section>
 
-  <!-- ==============================================
-        UI CARD STRIP 1: LIVE HIGHLIGHT METRICS (Display Only)
-  =============================================== -->
-  <!-- <section class="metrics-strip" *ngIf="revamp()?.[ 'home-metrics' ]">
-    <div 
-      class="metric-card" 
-      *ngFor="let metric of revamp()?.[ 'home-metrics' ]?.[ 'list' ]">
-      <span class="metric-icon">{{ metric.icon }}</span>
-      <div class="metric-info">
-        <strong>{{ metric.value }}</strong>
-        <p>{{ metric.label }}</p>
-      </div>
-    </div>
-  </section> -->
-
   <!-- =========================
         CATEGORIES (3 Items)
   ========================== -->
@@ -74,20 +76,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ==============================================
-        UI CARD STRIP 2: PROMO DISCOVERY TILES (Display Only)
-  =============================================== -->
-  <!-- <section class="discovery-strip" *ngIf="revamp()?.[ 'home-discovery-cards' ]">
-    <div 
-      class="discovery-card" 
-      *ngFor="let promo of revamp()?.[ 'home-discovery-cards' ]?.[ 'list' ]">
-      <span class="discovery-badge">{{ promo.badge }}</span>
-      <h3>{{ promo.title }}</h3>
-      <p>{{ promo.tagline }}</p>
-      <div class="discovery-icon">{{ promo.icon }}</div>
-    </div>
-  </section> -->
 
   <!-- =========================
         FEATURES
@@ -142,34 +130,6 @@
     </div>
   </section>
 
-  <!-- ==============================================
-        UI CARD STRIP 3: CUSTOMER TESTIMONIAL CARDS (Display Only)
-  =============================================== -->
-  <!-- <section class="section testimonials-section" *ngIf="revamp()?.[ 'home-testimonials' ]">
-    <div class="section-heading">
-      <div>
-        <h2>{{ revamp()?.[ 'home-testimonials' ]?.[ 'title' ] }}</h2>
-        <p>{{ revamp()?.[ 'home-testimonials' ]?.[ 'subtitle' ] }}</p>
-      </div>
-    </div>
-
-    <div class="testimonial-grid">
-      <div 
-        class="testimonial-card" 
-        *ngFor="let review of revamp()?.[ 'home-testimonials' ]?.[ 'list' ]">
-        <div class="stars">{{ review.stars }}</div>
-        <p class="comment">"{{ review.comment }}"</p>
-        <div class="reviewer">
-          <span class="avatar">{{ review.avatar }}</span>
-          <div>
-            <h4>{{ review.name }}</h4>
-            <small>{{ review.role }}</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
   <!-- =========================
         OFFER BANNER
   ========================== -->
@@ -188,7 +148,7 @@
   </section>
 
   <!-- ==============================================
-        UI CARD STRIP 4: TRUST & SERVICE ASSURANCES (Display Only)
+        UI CARD STRIP 4: TRUST & SERVICE ASSURANCES
   =============================================== -->
   <section class="trust-grid" *ngIf="revamp()?.[ 'home-trust-badges' ]">
     <div 

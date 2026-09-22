@@ -1,0 +1,106 @@
+{
+  "screenCoverage": "single",
+  "moduleIdentifier": "shell",
+  "lastModified": "2026-09-22T10:00:00",
+  "content": [
+    {
+      "screenIdentifier": "shell-app-content",
+      "screenContent": [
+        {
+          "key": "home-hero",
+          "device": "both",
+          "offerTag": "",
+          "headingLine1": "स्मार्ट खरीदारी करें",
+          "headingLine2": "सब कुछ खरीदें",
+          "subheading": "शानदार कीमतों पर नवीनतम उत्पादों की खोज करें। इलेक्ट्रॉनिक्स, फैशन, एक्सेसरीज़ और बहुत कुछ पाएं।",
+          "shopBtnText": "अभी खरीदें →",
+          "exploreBtnText": "और देखें →"
+        },
+        {
+          "key": "home-categories",
+          "device": "both",
+          "title": "श्रेणी के अनुसार खरीदारी करें",
+          "subtitle": "वह खोजें जो आप ढूंढ रहे हैं",
+          "list": [
+            { "icon": "📱", "name": "मोबाइल", "count": "120+ उत्पाद" },
+            { "icon": "💻", "name": "लैपटॉप", "count": "80+ उत्पाद" },
+            { "icon": "🎧", "name": "एक्सेसरीज़", "count": "200+ उत्पाद" }
+          ]
+        },
+        {
+          "key": "home-features",
+          "device": "both",
+          "list": [
+            { "icon": "🚚", "title": "मुफ़्त डिलीवरी", "desc": "₹499 से अधिक के ऑर्डर पर मुफ़्त डिलीवरी" },
+            { "icon": "🔒", "title": "सुरक्षित भुगतान", "desc": "100% सुरक्षित भुगतान" },
+            { "icon": "↩️", "title": "आसान रिटर्न", "desc": "7 दिनों की आसान रिटर्न नीति" },
+            { "icon": "💬", "title": "24/7 सहायता", "desc": "हम आपकी मदद के लिए हमेशा तैयार हैं" }
+          ]
+        },
+        {
+          "key": "home-featured-products",
+          "device": "both",
+          "title": "विशेष उत्पाद",
+          "subtitle": "लोकप्रिय उत्पाद जो आपको पसंद आ सकते हैं",
+          "viewAllBtnText": "सभी देखें →",
+          "products": [
+            {
+              "img": "💻",
+              "badge": "बेस्ट सेलर",
+              "title": "HP लैपटॉप",
+              "ratingStars": "★★★★★",
+              "ratingCount": "(120)",
+              "currentPrice": "₹55,999",
+              "originalPrice": "₹65,999"
+            },
+            {
+              "img": "⌚",
+              "badge": "नया",
+              "title": "स्मार्ट वॉच",
+              "ratingStars": "★★★★★",
+              "ratingCount": "(150)",
+              "currentPrice": "₹4,499",
+              "originalPrice": "₹6,999"
+            }
+          ]
+        },
+        {
+          "key": "home-promos",
+          "device": "both",
+          "bannerTag": "सीमित समय का ऑफर",
+          "bannerTitle": "50% तक की छूट पाएं",
+          "bannerDesc": "चुनिंदा इलेक्ट्रॉनिक्स और एक्सेसरीज़ पर।",
+          "bannerBtnText": "ऑफर्स देखें →",
+          "newsletterTitle": "अपडेट रहें",
+          "newsletterDesc": "नए उत्पादों और विशेष ऑफ़र के बारे में अपडेट पाने के लिए सदस्यता लें।"
+        },
+        {
+          "key": "home-trust-badges",
+          "device": "both",
+          "list": [
+            {
+              "icon": "🔒",
+              "title": "एन्क्रिप्टेड भुगतान",
+              "desc": "256-बिट SSL बहुस्तरीय चेकआउट सुरक्षा।"
+            },
+            {
+              "icon": "🔄",
+              "title": "7-दिन आसान रिटर्न",
+              "desc": "बिना किसी सवाल के पिकअप और रिप्लेसमेंट।"
+            },
+            {
+              "icon": "🏷️",
+              "title": "सर्वोत्तम मूल्य गारंटी",
+              "desc": "ब्रांड ओरिजिनल्स पर प्रमाणित प्रतिस्पर्धी कीमतें।"
+            },
+            {
+              "icon": "💬",
+              "title": "24/7 प्राथमिकता सहायता",
+              "desc": "किसी भी समय तकनीकी सहायता के लिए सीधा संपर्क।"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

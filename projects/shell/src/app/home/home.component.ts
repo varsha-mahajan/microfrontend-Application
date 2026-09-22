@@ -1,8 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { MockApiService } from '../services/mock-api.service';
 import { ContentService } from '../services/content.service';
-import { ShellMockConfig, SHELL_FALLBACK } from '../constant/shells-fallback.constant';
+import { 
+  ShellMockConfig, 
+  SHELL_FALLBACK, 
+  SHELL_FALLBACK_HI 
+} from '../constant/shells-fallback.constant';
 
 @Component({
   selector: 'app-home',
@@ -13,8 +17,23 @@ export class HomeComponent implements OnInit {
   products: any[] = [];
   errorMessage = '';
 
-  // Signal seeded directly from SHELL_FALLBACK dictionary map
-  homeData = signal<Record<string, any>>(this.extractScreenMap(SHELL_FALLBACK));
+  // Supported languages list
+  availableLanguages = [
+    { code: 'en', label: 'English' },
+    { code: 'hi', label: 'हिंदी' }
+  ];
+
+  // Active language state initialized from localStorage or default 'en'
+  selectedLang = signal<string>(localStorage.getItem('preferredLang') || 'en');
+
+  // Seed signal initially with the respective language constant fallback
+  homeData = signal<Record<string, any>>(
+    this.extractScreenMap(
+      (localStorage.getItem('preferredLang') || 'en') === 'hi' 
+        ? SHELL_FALLBACK_HI 
+        : SHELL_FALLBACK
+    )
+  );
 
   constructor(
     private router: Router,
@@ -23,7 +42,14 @@ export class HomeComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.loadHomeContent();
+    await this.loadHomeContent(this.selectedLang());
+  }
+
+  /**
+   * Selects language-specific constant fallback (English vs Hindi)
+   */
+  private getFallbackConfig(lang: string): ShellMockConfig {
+    return lang === 'hi' ? SHELL_FALLBACK_HI : SHELL_FALLBACK;
   }
 
   /**
@@ -59,7 +85,7 @@ export class HomeComponent implements OnInit {
       const sourceVal = source[key];
       const targetVal = target ? target[key] : undefined;
 
-      // Detect empty or whitespace-only string in JSON
+      // Detect empty or whitespace-only string in dynamic JSON
       const isEmptySourceString = typeof sourceVal === 'string' && sourceVal.trim() === '';
 
       if (
@@ -76,12 +102,12 @@ export class HomeComponent implements OnInit {
         // 1st Priority: valid dynamic value from JSON
         output[key] = sourceVal;
       } else if (targetVal !== undefined) {
-        // Fallback: keep constant value if JSON key is blank or invalid
+        // Fallback: keep constant value if JSON key is blank, null, or undefined
         output[key] = targetVal;
       }
     });
 
-    // Ensure any keys present in target but completely missing in source are preserved
+    // Ensure any keys present in constant target but missing in dynamic JSON are preserved
     if (target && typeof target === 'object') {
       Object.keys(target).forEach((key) => {
         if (
@@ -97,13 +123,19 @@ export class HomeComponent implements OnInit {
     return output;
   }
 
-  private async loadHomeContent(): Promise<void> {
-    const fallbackMap = this.extractScreenMap(SHELL_FALLBACK);
+  /**
+   * Loads language-specific mock JSON (shell-mock-hi.json or shell-mock.json)
+   * Falls back to SHELL_FALLBACK_HI or SHELL_FALLBACK based on current locale
+   */
+  private async loadHomeContent(lang: string = 'en'): Promise<void> {
+    const activeFallback = this.getFallbackConfig(lang);
+    const fallbackMap = this.extractScreenMap(activeFallback);
+    const fileName = lang === 'hi' ? 'assets/data/shell-mock-hi.json' : 'assets/data/shell-mock.json';
 
     try {
-      const response = await fetch('assets/data/shell-mock.json');
+      const response = await fetch(fileName);
       if (!response.ok) {
-        throw new Error(`Failed to fetch JSON. Status: ${response.status}`);
+        throw new Error(`Failed to fetch ${fileName}. Status: ${response.status}`);
       }
 
       const config: ShellMockConfig = await response.json();
@@ -112,10 +144,14 @@ export class HomeComponent implements OnInit {
         const dynamicMap = this.extractScreenMap(config);
         const mergedData = this.deepMerge(fallbackMap, dynamicMap);
 
-        // Enforce strictly 3 categories
+        // Enforce strictly 3 categories (supporting both English and Hindi naming)
         if (mergedData['home-categories']?.list) {
+          const allowedCategories = [
+            'MOBILE', 'LAPTOP', 'ACCESSORIES', 'MOBILES', 'LAPTOPS',
+            'मोबाइल', 'लैपटॉप', 'एक्सेसरीज़', 'सामान'
+          ];
           mergedData['home-categories'].list = mergedData['home-categories'].list.filter((item: any) =>
-            ['MOBILE', 'LAPTOP', 'ACCESSORIES', 'MOBILES', 'LAPTOPS'].includes(item.name?.toUpperCase())
+            allowedCategories.includes(item.name?.toUpperCase())
           );
         }
 
@@ -131,8 +167,52 @@ export class HomeComponent implements OnInit {
         throw new Error('Invalid JSON structure');
       }
     } catch (error) {
-      console.warn('Falling back to SHELL_FALLBACK constant:', error);
+      console.warn(`Dynamic JSON load failed for '${lang}', falling back to constant:`, error);
       this.homeData.set(fallbackMap);
+    }
+  }
+
+  /**
+   * Language Switch Trigger from UI
+   */
+  async changeLanguage(lang: string): Promise<void> {
+    if (this.selectedLang() === lang) return;
+
+    this.selectedLang.set(lang);
+    localStorage.setItem('preferredLang', lang);
+    await this.loadHomeContent(lang);
+
+    // Broadcast across micro-frontends (Products MFE, Cart MFE, Shell)
+    window.dispatchEvent(
+      new CustomEvent('mfe-lang-change', {
+        detail: { lang }
+      })
+    );
+  }
+
+  /**
+   * Sync with language change event triggered from other MFEs
+   */
+  @HostListener('window:mfe-lang-change', ['$event'])
+  async onLanguageChange(event: CustomEvent): Promise<void> {
+    const newLang = event?.detail?.lang;
+    if (newLang && newLang !== this.selectedLang()) {
+      this.selectedLang.set(newLang);
+      await this.loadHomeContent(newLang);
+    }
+  }
+
+  /**
+   * Sync when another browser tab updates localStorage
+   */
+  @HostListener('window:storage', ['$event'])
+  async onStorageChange(event: StorageEvent): Promise<void> {
+    if (event.key === 'preferredLang') {
+      const newLang = event.newValue || 'en';
+      if (newLang !== this.selectedLang()) {
+        this.selectedLang.set(newLang);
+        await this.loadHomeContent(newLang);
+      }
     }
   }
 
@@ -150,11 +230,11 @@ export class HomeComponent implements OnInit {
     let categoryKey = 'All';
     const name = (categoryName || '').toUpperCase();
 
-    if (name.includes('MOBILE')) {
+    if (name.includes('MOBILE') || name.includes('मोबाइल')) {
       categoryKey = 'Mobile';
-    } else if (name.includes('LAPTOP')) {
+    } else if (name.includes('LAPTOP') || name.includes('लैपटॉप')) {
       categoryKey = 'Laptop';
-    } else if (name.includes('ACCESSOR')) {
+    } else if (name.includes('ACCESSOR') || name.includes('एक्सेसरीज़') || name.includes('सामान')) {
       categoryKey = 'Accessories';
     }
 
